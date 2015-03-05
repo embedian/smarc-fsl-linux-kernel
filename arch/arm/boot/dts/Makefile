@@ -118,6 +118,7 @@ dtb-$(CONFIG_ARCH_MXC) += \
 	imx6dl-sabreauto-flexcan1.dtb \
 	imx6dl-sabreauto-gpmi-weim.dtb \
 	imx6dl-sabresd.dtb \
+	imx6dl-smarcfimx6.dtb \
 	imx6dl-sabresd-enetirq.dtb \
 	imx6dl-sabresd-hdcp.dtb \
 	imx6dl-sabresd-ldo.dtb \
@@ -130,6 +131,7 @@ dtb-$(CONFIG_ARCH_MXC) += \
 	imx6q-sabreauto-gpmi-weim.dtb \
 	imx6q-sabrelite.dtb \
 	imx6q-sabresd.dtb \
+	imx6q-smarcfimx6.dtb \
 	imx6q-sabresd-enetirq.dtb \
 	imx6q-sabresd-uart.dtb \
 	imx6q-sabresd-hdcp.dtb \
