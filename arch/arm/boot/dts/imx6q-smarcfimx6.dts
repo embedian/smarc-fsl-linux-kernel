@@ -56,16 +56,8 @@
 	status = "okay";
 };
 
-&cpu0 {
-        arm-supply = <&reg_arm>;
-        soc-supply = <&reg_soc>;
-};
-
-&gpc {
-        /* use ldo-enable, u-boot will check it and configure */
-        fsl,ldo-bypass = <0>;
-        /* watchdog select of reset source */
-        fsl,wdog-reset = <1>;
+&vpu {
+    pu-supply = <&reg_pu>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
 };
 
 &wdog1 {

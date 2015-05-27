@@ -157,7 +157,7 @@
 	mxcfb3: fb@2 {
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "lcd";
-		interface_pix_fmt = "RGB565";
+		interface_pix_fmt = "RGB24";
 		mode_str ="CLAA-WVGA";
 		default_bpp = <16>;
 		int_clk = <0>;
@@ -179,7 +179,7 @@
 		compatible = "fsl,lcd";
 		ipu_id = <0>;
 		disp_id = <0>;
-		default_ifmt = "RGB565";
+		default_ifmt = "RGB24";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ipu1>;
 		status = "okay";
@@ -198,7 +198,7 @@
 		ipu_id = <0>;
 		csi_id = <0>;
 		mclk_source = <0>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	v4l2_cap_1 {
@@ -206,12 +206,12 @@
 		ipu_id = <0>;
 		csi_id = <1>;
 		mclk_source = <0>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	v4l2_out {
 		compatible = "fsl,mxc_v4l2_output";
-		status = "okay";
+		status = "disabled";
 	};
 
 	mipi_dsi_reset: mipi-dsi-reset {
@@ -226,11 +226,6 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_audmux>;
 	status = "okay";
-};
-
-&cpu0 {
-	arm-supply = <&sw1a_reg>;
-	soc-supply = <&sw1c_reg>;
 };
 
 &ecspi1 {
@@ -369,7 +364,11 @@
                                         compatible = "nxp,pcf8563";
                                         reg = <0x51>;
                                         };*/
-                                };
+        			eeprom@76 {
+                			compatible = "at,24c256";
+                			reg = <0x76>;
+                                	};
+				};
 
                         i2c@2 {
                                 #address-cells = <1>;
@@ -409,7 +408,7 @@
                                 MX6QDL_PAD_NANDF_CS0__GPIO6_IO11        0x80000000
                                 MX6QDL_PAD_NANDF_CS1__GPIO6_IO14        0x80000000
                                 MX6QDL_PAD_NANDF_CS2__CCM_CLKO2 	0x130b0
-                                MX6QDL_PAD_NANDF_CS3__GPIO6_IO16 	0x80000000
+                                /*MX6QDL_PAD_NANDF_CS3__GPIO6_IO16 	0x80000000*/
                                 MX6QDL_PAD_EIM_CS0__GPIO2_IO23          0x80000000
                                 MX6QDL_PAD_EIM_CS1__GPIO2_IO24 		0x80000000
                                 MX6QDL_PAD_EIM_D23__GPIO3_IO23 		0x80000000
@@ -704,9 +703,11 @@
 };
 
 &gpc {
-	/* use ldo-bypass, u-boot will check it and configure */
-	fsl,ldo-bypass = <1>;
-	fsl,wdog-reset = <2>;
+        /* use ldo-enable, u-boot will check it and configure */
+        fsl,ldo-bypass = <1>;
+        /* watchdog select of reset source */
+        fsl,wdog-reset = <1>;
+        pu-supply = <&reg_pu>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
 };
 
 &hdmi_audio {
@@ -716,12 +717,12 @@
 &hdmi_cec {
 	pinctrl-names = "default";
 	/*pinctrl-0 = <&pinctrl_hdmi_cec>;*/
-	status = "okay";
+	status = "disabled";
 };
 
 &hdmi_core {
 	ipu_id = <0>;
-	disp_id = <0>;
+	disp_id = <1>;
 	status = "okay";
 };
 
@@ -779,7 +780,7 @@
 };
 
 &mipi_csi {
-	status = "okay";
+	status = "disabled";
 	ipu_id = <0>;
 	csi_id = <1>;
 	v_channel = <0>;
@@ -885,7 +886,7 @@
 	no-1-8-v;
 	keep-power-in-suspend;
 	enable-sdio-wakeup;
-	status = "okay";
+	status = "disabled";
 };
 
 &usdhc4 {
