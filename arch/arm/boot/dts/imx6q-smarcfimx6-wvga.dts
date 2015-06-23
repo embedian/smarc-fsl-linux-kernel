@@ -21,7 +21,7 @@
                 display-timings {
                         native-mode = <&timing0>;
                         timing0: g070vw01 {
-                                clock-frequency = <51400000>;
+				clock-frequency = <33300000>;
                                 hactive = <800>;
                                 vactive = <480>;
                                 hback-porch = <64>;
@@ -44,7 +44,7 @@
                 display-timings {
                         native-mode = <&timing1>;
                         timing1: g070vw01 {
-                                clock-frequency = <51400000>;
+				clock-frequency = <33300000>;
                                 hactive = <800>;
                                 vactive = <480>;
                                 hback-porch = <64>;
