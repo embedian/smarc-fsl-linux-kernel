@@ -3265,7 +3265,7 @@ CONFIG_MXC_IPU_V3=y
 #
 CONFIG_MXC_VPU=y
 # CONFIG_MXC_VPU_DEBUG is not set
-CONFIG_MX6_VPU_352M=y
+# CONFIG_MX6_VPU_352M is not set
 
 #
 # MXC HDMI CEC (Consumer Electronics Control) support

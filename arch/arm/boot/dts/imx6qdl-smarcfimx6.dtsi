@@ -416,15 +416,15 @@
                                 MX6QDL_PAD_NANDF_CLE__GPIO6_IO07 	0x80000000
                                 MX6QDL_PAD_GPIO_0__GPIO1_IO00   	0x80000000
                                 MX6QDL_PAD_NANDF_CS2__CCM_CLKO2 	0x130b0
+                                MX6QDL_PAD_NANDF_CS3__GPIO6_IO16        0x80000000
                                 MX6QDL_PAD_EIM_CS0__GPIO2_IO23          0x80000000
                                 MX6QDL_PAD_EIM_CS1__GPIO2_IO24 		0x80000000
-                                MX6QDL_PAD_EIM_D23__GPIO3_IO23 		0x80000000
                                 MX6QDL_PAD_EIM_D22__GPIO3_IO22  	0x80000000
                                 MX6QDL_PAD_EIM_EB3__GPIO2_IO31 		0x80000000
                                 MX6QDL_PAD_EIM_D16__GPIO3_IO16 		0x80000000
                                 MX6QDL_PAD_EIM_DA9__GPIO3_IO09 		0x80000000
                                 MX6QDL_PAD_EIM_D29__GPIO3_IO29 		0x80000000
-                                MX6QDL_PAD_GPIO_9__GPIO1_IO09 		0x80000000
+                                MX6QDL_PAD_GPIO_9__WDOG1_B              0x80000000
                                 MX6QDL_PAD_GPIO_2__GPIO1_IO02 		0x80000000
                                 MX6QDL_PAD_SD1_CMD__GPIO1_IO18 		0x80000000
                                 MX6QDL_PAD_CSI0_MCLK__CCM_CLKO1    	0x130b0
@@ -766,7 +766,7 @@
 &pcie {
 	/*power-on-gpio = <&gpio1 17 0>;*/
 	reset-gpio = <&gpio1 20 0>;
-        gpios = <&gpio1 17 2>;
+	reset-delay-us = <50>;
 	status = "okay";
 };
 
