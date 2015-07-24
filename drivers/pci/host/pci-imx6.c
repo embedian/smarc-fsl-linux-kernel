@@ -277,14 +277,14 @@ static int imx6_pcie_assert_core_reset(struct pcie_port *pp)
 			writel(val, pp->dbi_base + PCIE_PL_PFLR);
 
 			regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
-					IMX6Q_GPR12_PCIE_CTL_2, 0);
+					IMX6Q_GPR12_PCIE_CTL_2, 0 << 10);
 		}
 
 		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR1,
-				IMX6Q_GPR1_PCIE_TEST_PD,
-				IMX6Q_GPR1_PCIE_TEST_PD);
+				IMX6Q_GPR1_PCIE_TEST_PD, 1 << 18);
+
 		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR1,
-				IMX6Q_GPR1_PCIE_REF_CLK_EN, 0);
+				IMX6Q_GPR1_PCIE_REF_CLK_EN, 0 << 16);
 	}
 
 	return 0;
@@ -332,7 +332,7 @@ static int imx6_pcie_deassert_core_reset(struct pcie_port *pp)
 	} else {
 		/* power up core phy and enable ref clock */
 		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR1,
-				IMX6Q_GPR1_PCIE_TEST_PD, 0);
+				IMX6Q_GPR1_PCIE_TEST_PD, 0 << 18);
 
 		/* sata_ref is not used by pcie on imx6sx */
 		ret = clk_prepare_enable(imx6_pcie->ref_100m);
@@ -347,18 +347,18 @@ static int imx6_pcie_deassert_core_reset(struct pcie_port *pp)
 		 * add one ~10us delay here.
 		 */
 		udelay(10);
+
 		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR1,
-				IMX6Q_GPR1_PCIE_REF_CLK_EN,
-				IMX6Q_GPR1_PCIE_REF_CLK_EN);
+				IMX6Q_GPR1_PCIE_REF_CLK_EN, 1 << 16);
 	}
 
 	/* allow the clocks to stabilize */
-	udelay(200);
+        usleep_range(200, 500);
 
 	/* Some boards don't have PCIe reset GPIO. */
 	if (gpio_is_valid(imx6_pcie->reset_gpio)) {
 		gpio_set_value_cansleep(imx6_pcie->reset_gpio, 0);
-		mdelay(100);
+                msleep(100);
 		gpio_set_value_cansleep(imx6_pcie->reset_gpio, 1);
 	}
 
@@ -442,7 +442,7 @@ static int imx6_pcie_wait_for_link(struct pcie_port *pp)
 	int count = 200;
 
 	while (!dw_pcie_link_up(pp)) {
-		udelay(100);
+                usleep_range(100, 1000);
 		if (--count)
 			continue;
 
@@ -508,7 +508,7 @@ static int imx6_pcie_start_link(struct pcie_port *pp)
 		/* Test if the speed change finished. */
 		if (!(tmp & PORT_LOGIC_SPEED_CHANGE))
 			break;
-		udelay(100);
+                usleep_range(100, 1000);
 	}
 
 	/* Make sure link training is finished as well! */
@@ -584,7 +584,7 @@ static void imx6_pcie_reset_phy(struct pcie_port *pp)
 		 PHY_RX_OVRD_IN_LO_RX_PLL_EN);
 	pcie_phy_write(pp->dbi_base, PHY_RX_OVRD_IN_LO, temp);
 
-	udelay(2000);
+        usleep_range(2000, 3000);
 
 	pcie_phy_read(pp->dbi_base, PHY_RX_OVRD_IN_LO, &temp);
 	temp &= ~(PHY_RX_OVRD_IN_LO_RX_DATA_EN |
@@ -626,7 +626,7 @@ static int imx6_pcie_link_up(struct pcie_port *pp)
 		 * Wait a little bit, then re-check if the link finished
 		 * the training.
 		 */
-		udelay(10);
+                usleep_range(1000, 2000);
 	}
 	/*
 	 * From L0, initiate MAC entry to gen2 if EP/RC supports gen2.
@@ -680,6 +680,8 @@ static int __init imx6_add_pcie_port(struct pcie_port *pp,
 
 	pp->root_bus_nr = -1;
 	pp->ops = &imx6_pcie_host_ops;
+
+	usleep_range(25000, 30000);
 
 	ret = dw_pcie_host_init(pp);
 	if (ret) {
