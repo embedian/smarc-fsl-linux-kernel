@@ -335,11 +335,11 @@ static int imx6_pcie_deassert_core_reset(struct pcie_port *pp)
 	}
 
 	/* allow the clocks to stabilize */
-	udelay(200);
+        usleep_range(200, 500);
 
 	if (gpio_is_valid(imx6_pcie->reset_gpio)) {
 		gpio_set_value_cansleep(imx6_pcie->reset_gpio, 0);
-		mdelay(1);
+		msleep(100);
 		gpio_set_value_cansleep(imx6_pcie->reset_gpio, 1);
 	}
 
@@ -574,6 +574,9 @@ static int imx6_add_pcie_port(struct pcie_port *pp,
 	pp->ops = &imx6_pcie_host_ops;
 
 	spin_lock_init(&pp->conf_lock);
+
+        usleep_range(25000, 30000);
+
 	ret = dw_pcie_host_init(pp);
 	if (ret) {
 		dev_err(&pdev->dev, "failed to initialize host\n");

@@ -20,12 +20,6 @@
 	compatible = "fsl,imx6q-sabresd", "fsl,imx6q", "fsl,imx6q-smarcfimx6";
 };
 
-&battery {
-	offset-charger = <1900>;
-	offset-discharger = <1694>;
-	offset-usb-charger = <1685>;
-};
-
 &ldb {
 	lvds-channel@0 {
 		crtc = "ipu2-di0";
@@ -54,18 +48,6 @@
 
 &sata {
 	status = "okay";
-};
-
-&cpu0 {
-        arm-supply = <&reg_arm>;
-        soc-supply = <&reg_soc>;
-        pu-supply = <&reg_pu>; /* use pu_dummy if VDDSOC share with VDDPU */
-};
-
-&gpc {
-        fsl,ldo-bypass = <0>; /* use ldo-bypass, u-boot will check it and configure */
-        fsl,wdog-reset = <1>; /* watchdog select of reset source */
-        pu-supply = <&reg_pu>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
 };
 
 &gpu {

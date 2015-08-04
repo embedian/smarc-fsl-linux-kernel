@@ -17,20 +17,26 @@
 	compatible = "fsl,imx6dl-sabresd", "fsl,imx6dl", "fsl, imx6dl-smarcfimx6";
 };
 
-&cpu0 {
-        arm-supply = <&reg_arm>;
-        soc-supply = <&reg_soc>;
-        pu-supply = <&reg_pu>; /* use pu_dummy if VDDSOC share with VDDPU */
+&ldb {
+        lvds-channel@0 {
+                crtc = "ipu1-di0";
+        };
+
+        lvds-channel@1 {
+                crtc = "ipu1-di1";
+        };
 };
 
-&gpc {
-        fsl,ldo-bypass = <0>; /* use ldo-bypass, u-boot will check it and configure */
-        fsl,wdog-reset = <1>; /* watchdog select of reset source */
-        pu-supply = <&reg_pu>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
+&mxcfb1 {
+        status = "okay";
 };
 
-&gpu {
-        pu-supply = <&reg_pu>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
+&mxcfb2 {
+        status = "okay";
+};
+
+&pxp {
+        status = "okay";
 };
 
 &vpu {

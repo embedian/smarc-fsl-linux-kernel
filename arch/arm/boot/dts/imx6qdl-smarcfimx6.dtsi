@@ -22,40 +22,29 @@
 		reg = <0x10000000 0x40000000>;
 	};
 
-	battery: max8903@0 {
-		compatible = "fsl,max8903-charger";
-		pinctrl-names = "default";
-		dok_input = <&gpio2 24 1>;
-		uok_input = <&gpio1 27 1>;
-		chg_input = <&gpio3 23 1>;
-		flt_input = <&gpio5 2 1>;
-		fsl,dcm_always_high;
-		fsl,dc_valid;
-		fsl,usb_valid;
-		status = "okay";
-	};
-
 	hannstar_cabc {
 		compatible = "hannstar,cabc";
 
 		lvds0 {
-			gpios = <&gpio6 15 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio1 00 GPIO_ACTIVE_HIGH>;
 		};
 
 		lvds1 {
-			gpios = <&gpio6 16 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio1 00 GPIO_ACTIVE_HIGH>;
 		};
 	};
 
 	regulators {
 		compatible = "simple-bus";
+                #address-cells = <1>;
+                #size-cells = <0>;
 
 		reg_usb_otg_vbus: usb_otg_vbus {
 			compatible = "regulator-fixed";
 			regulator-name = "usb_otg_vbus";
 			regulator-min-microvolt = <5000000>;
 			regulator-max-microvolt = <5000000>;
-			gpio = <&gpio3 22 0>;
+                        gpio = <&gpio1 29 0>;
 			enable-active-high;
 		};
 
@@ -64,9 +53,17 @@
 			regulator-name = "usb_h1_vbus";
 			regulator-min-microvolt = <5000000>;
 			regulator-max-microvolt = <5000000>;
-			gpio = <&gpio1 29 0>;
+			gpio = <&gpio1 26 0>;
 			enable-active-high;
 		};
+
+                reg_1p8v: 1p8v {
+                        compatible = "regulator-fixed";
+                        regulator-name = "1P8V";
+                        regulator-min-microvolt = <1800000>;
+                        regulator-max-microvolt = <1800000>;
+                        regulator-always-on;
+                };
 
                 reg_2p5v: 2p5v {
                         compatible = "regulator-fixed";
@@ -83,13 +80,6 @@
                         regulator-max-microvolt = <3300000>;
                         regulator-always-on;
                 };
-
-		reg_mipi_dsi_pwr_on: mipi_dsi_pwr_on {
-			compatible = "regulator-fixed";
-			regulator-name = "mipi_dsi_pwr_on";
-			gpio = <&gpio6 14 0>;
-			enable-active-high;
-		};
 
 		reg_sensor: sensor_supply {
 			compatible = "regulator-fixed";
@@ -116,6 +106,14 @@
                 mux-ext-port = <3>;
         };
 
+        sound-spdif {
+                compatible = "fsl,imx-audio-spdif";
+                model = "imx-spdif";
+                spdif-controller = <&spdif>;
+                spdif-in;
+                spdif-out;
+        };
+
 	sound-hdmi {
 		compatible = "fsl,imx6q-audio-hdmi",
 			     "fsl,imx-audio-hdmi";
@@ -126,8 +124,8 @@
 	mxcfb1: fb@0 {
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "ldb";
-		interface_pix_fmt = "RGB666";
-		default_bpp = <16>;
+		interface_pix_fmt = "RGB24";
+		default_bpp = <24>;
 		int_clk = <0>;
 		late_init = <0>;
 		status = "disabled";
@@ -147,7 +145,7 @@
 	mxcfb3: fb@2 {
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "lcd";
-		interface_pix_fmt = "RGB565";
+		interface_pix_fmt = "RGB24";
 		mode_str ="CLAA-WVGA";
 		default_bpp = <16>;
 		int_clk = <0>;
@@ -158,8 +156,8 @@
 	mxcfb4: fb@3 {
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "ldb";
-		interface_pix_fmt = "RGB666";
-		default_bpp = <16>;
+		interface_pix_fmt = "RGB24";
+		default_bpp = <24>;
 		int_clk = <0>;
 		late_init = <0>;
 		status = "disabled";
@@ -169,7 +167,7 @@
 		compatible = "fsl,lcd";
 		ipu_id = <0>;
 		disp_id = <0>;
-		default_ifmt = "RGB565";
+		default_ifmt = "RGB24";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ipu1_1>;
 		status = "okay";
@@ -179,6 +177,7 @@
 		compatible = "pwm-backlight";
 		pwms = <&pwm2 0 5000000>;
 		brightness-levels = <0 4 8 16 32 64 128 255>;
+                /*set default brightness level to 7, 7 is the brightest*/
 		default-brightness-level = <7>;
 	};
 
@@ -187,7 +186,7 @@
 		ipu_id = <0>;
 		csi_id = <0>;
 		mclk_source = <0>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	v4l2_cap_1 {
@@ -195,20 +194,20 @@
 		ipu_id = <0>;
 		csi_id = <1>;
 		mclk_source = <0>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	v4l2_out {
 		compatible = "fsl,mxc_v4l2_output";
-		status = "okay";
+		status = "disabled";
 	};
 
-	mipi_dsi_reset: mipi-dsi-reset {
-		compatible = "gpio-reset";
-		reset-gpios = <&gpio6 11 GPIO_ACTIVE_LOW>;
-		reset-delay-us = <50>;
-		#reset-cells = <0>;
-	};
+        mipi_csi_reset: mipi-csi-reset {
+                compatible = "gpio-reset";
+                reset-gpios = <&gpio2 06 GPIO_ACTIVE_LOW>,<&gpio2 03 GPIO_ACTIVE_LOW>; /*GPIO2 and GPIO3*/
+                reset-delay-us = <50>;
+                #reset-cells = <0>;
+        };
 };
 
 &audmux {
@@ -218,16 +217,33 @@
 };
 
 &cpu0 {
-	arm-supply = <&sw1a_reg>;
-	soc-supply = <&sw1c_reg>;
-	pu-supply = <&pu_dummy>; /* use pu_dummy if VDDSOC share with VDDPU */
+    	pu-supply = <&reg_pu>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
+};
+
+&ecspi1 {
+        fsl,spi-num-chipselects = <2>;
+        cs-gpios = <&gpio4 9 GPIO_ACTIVE_HIGH>, <&gpio4 10 GPIO_ACTIVE_HIGH>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_ecspi1_2 &pinctrl_ecspi1_cs_2>;
+        status = "okay";
+
+        spidev@0x00 {
+                compatible = "spidev";
+                spi-max-frequency = <16000000>;
+                reg = <0>;
+        };
+        spidev@0x01 {
+                compatible = "spidev";
+                spi-max-frequency = <16000000>;
+                reg = <1>;
+        };
 };
 
 &ecspi2 {
-        fsl,spi-num-chipselects = <3>;
-        cs-gpios = <&gpio5 29 0>, <&gpio3 24 0>, <&gpio3 25 0>;
+        fsl,spi-num-chipselects = <4>;
+        cs-gpios = <&gpio5 29 GPIO_ACTIVE_HIGH>,<&gpio3 24 GPIO_ACTIVE_HIGH>,<&gpio3 25 GPIO_ACTIVE_HIGH>,<0>;
         pinctrl-names = "default";
-        pinctrl-0 = <&pinctrl_ecspi2_1>, <&pinctrl_ecspi2_cs_1>;
+        pinctrl-0 = <&pinctrl_ecspi2_1 &pinctrl_ecspi2_cs_1>;
         status = "okay";
 
         flash: mx25u3235f0@0 {
@@ -236,86 +252,73 @@
                 compatible = "macronix,mx25u3235f";
                 spi-max-frequency = <16000000>;
                 reg = <0>;
-			partition@0 {
-				label = "U-Boot";
-				reg = <0x0 0x100000>;
-			};
+                        partition@0 {
+                                label = "U-Boot";
+                                reg = <0x0 0x100000>;
+                        };
 
-			partition@100000 {
-				label = "U-Boot Environment";
-				reg = <0x100000 0x080000>;
-			};
+                        partition@100000 {
+                                label = "U-Boot Environment";
+                                reg = <0x100000 0x080000>;
+                        };
 
-			partition@180000 {
-				label = "Flattened Device Tree";
-				reg = <0x180000 0x200000>;
-			};
+                        partition@180000 {
+                                label = "Flattened Device Tree";
+                                reg = <0x180000 0x200000>;
+                        };
 
         };
-};
 
-&ecspi1 {
-	fsl,spi-num-chipselects = <2>;
-	cs-gpios = <&gpio4 9 0>, <&gpio4 10 0>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_ecspi1_2>, <&pinctrl_ecspi1_cs_2>;
-	status = "okay";
-    	
-	spidev@0x00 {
-        	compatible = "spidev";
-        	spi-max-frequency = <20000000>;
-        	reg = <0>;
-    	};
-    	spidev@0x01 {
-        	compatible = "spidev";
-        	spi-max-frequency = <20000000>;
-        	reg = <1>;
-    	};
+        spidev@0x02 {
+                #address-cells = <1>;
+                #size-cells = <0>;
+                compatible = "spidev";
+                reg = <2>;
+                spi-max-frequency = <16000000>;
+                };
+
+        spidev@0x03 {
+                #address-cells = <1>;
+                #size-cells = <0>;
+                compatible = "spidev";
+                reg = <3>;
+                spi-max-frequency = <16000000>;
+                };
 };
 
 &fec {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_enet_1>, <&pinctrl_enet_irq>;
-        /*interrupts-extended = <&gpio4 11 0x04>, <&intc 0 119 0x04>;*/
 	phy-mode = "rgmii";
+        fsl,magic-packet;
 	status = "okay";
 };
 
 &gpc {
-	fsl,cpu_pupscr_sw2iso = <0xf>;
-	fsl,cpu_pupscr_sw = <0xf>;
-	fsl,cpu_pdnscr_iso2sw = <0x1>;
-	fsl,cpu_pdnscr_iso = <0x1>;
-	fsl,ldo-bypass = <1>; /* use ldo-bypass, u-boot will check it and configure */
-	fsl,wdog-reset = <2>; /* watchdog select of reset source */
-	pu-supply = <&pu_dummy>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
+        /* use ldo-enable, u-boot will check it and configure */
+        fsl,ldo-bypass = <1>;
+        /* watchdog select of reset source */
+        fsl,wdog-reset = <1>;
+        pu-supply = <&reg_pu>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
 };
-
-/*&wdog1 {
-	status = "disabled";
-};
-
-&wdog2 {
-	status = "okay";
-};*/
 
 &gpu {
-	pu-supply = <&pu_dummy>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
+	pu-supply = <&reg_pu>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
 };
 
 &hdmi_audio {
 	status = "okay";
 };
 
-/*&hdmi_cec {
+&hdmi_cec {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_hdmi_cec_2>;
+	/*pinctrl-0 = <&pinctrl_hdmi_cec_2>;*/
 	status = "okay";
-};*/
+};
 
 &hdmi_core {
 	ipu_id = <0>;
-	disp_id = <0>;
+	disp_id = <1>;
 	status = "okay";
 };
 
@@ -342,6 +345,7 @@
                 clocks = <&clks 201>;
                 VDDA-supply = <&reg_2p5v>;
                 VDDIO-supply = <&reg_3p3v>;
+                VDDD-supply = <&reg_1p8v>;
         };
 
 	s35390a: s35390a@30 {
@@ -353,6 +357,17 @@
 		compatible = "at,24c256";
 		reg = <0x57>;
 	};
+
+        bq2477x@09 { 
+                compatible = "ti,bq2477x"; 
+                reg = <0x09>; 
+                ti,dac-ichg = <2240>; 
+                ti,dac-v = <9008>; 
+                ti,dac-minsv = <4608>; 
+                ti,dac-iin = <4992>; 
+                ti,wdt-refresh-timeout = <40>; 
+                ti,charger-detect-gpio = <&gpio3 22 GPIO_ACTIVE_LOW>; 
+         }; 
 };
 
 &i2c2 {
@@ -374,49 +389,53 @@
         status = "okay";
 
         i2c-switch@70 {
-		compatible = "nxp,pca9545";
- 		#address-cells = <1>;
- 		#size-cells = <0>;
-		reg = <0x70>;
-		
-			i2c@0 {
-				#address-cells = <1>;
-				#size-cells = <0>;
-				compatible = "nxp,pca954x-bus";
-				reg = <0>;
-			
-				/*eeprom@54 {
-					compatible = "at,24c08";
-					reg = <0x54>;
-					};*/
-				};
+                compatible = "nxp,pca9545";
+                #address-cells = <1>;
+                #size-cells = <0>;
+                reg = <0x70>;
 
-			i2c@1 {
-				#address-cells = <1>;
-				#size-cells = <0>;
-				compatible = "nxp,pca954x-bus";
-				reg = <1>;
-				
-				/* Example to add new i2c device */
-					/*rtc@51 {
-					compatible = "nxp,pcf8563";
-					reg = <0x51>;
-					};*/
-				};
+                        i2c@0 {
+                                #address-cells = <1>;
+                                #size-cells = <0>;
+                                compatible = "nxp,pca954x-bus";
+                                reg = <0>;
+
+                                /*eeprom@54 {
+                                        compatible = "at,24c08";
+                                        reg = <0x54>;
+                                        };*/
+                                };
+
+                        i2c@1 {
+                                #address-cells = <1>;
+                                #size-cells = <0>;
+                                compatible = "nxp,pca954x-bus";
+                                reg = <1>;
+
+                                /* Example to add new i2c device */
+                                        /*rtc@51 {
+                                        compatible = "nxp,pcf8563";
+                                        reg = <0x51>;
+                                        };*/
+                                eeprom@76 {
+                                        compatible = "at,24c256";
+                                        reg = <0x76>;
+                                        };
+                                };
 
                         i2c@2 {
                                 #address-cells = <1>;
                                 #size-cells = <0>;
-				compatible = "nxp,pca954x-bus";
+                                compatible = "nxp,pca954x-bus";
                                 reg = <2>;
-				};
+                                };
                         i2c@3 {
                                 #address-cells = <1>;
                                 #size-cells = <0>;
                                 compatible = "nxp,pca954x-bus";
                                 reg = <3>;
                                 };
-        	};
+                };
 };
 
 &iomuxc {
@@ -426,105 +445,44 @@
 	hog {
 		pinctrl_hog_1: hoggrp-1 {
 			fsl,pins = <
-				MX6QDL_PAD_GPIO_4__GPIO1_IO04   0x80000000
-				MX6QDL_PAD_GPIO_5__GPIO1_IO05   0x80000000
-				MX6QDL_PAD_NANDF_D0__GPIO2_IO00 0x80000000
-				MX6QDL_PAD_NANDF_D1__GPIO2_IO01 0x80000000
-				MX6QDL_PAD_NANDF_D2__GPIO2_IO02 0x80000000
-				MX6QDL_PAD_NANDF_D3__GPIO2_IO03 0x80000000
-                                MX6QDL_PAD_NANDF_D4__GPIO2_IO04 0x80000000
-                                MX6QDL_PAD_NANDF_D5__GPIO2_IO05 0x80000000
-                                MX6QDL_PAD_NANDF_D6__GPIO2_IO06 0x80000000
-				MX6QDL_PAD_NANDF_ALE__GPIO6_IO08 0x80000000
-				MX6QDL_PAD_NANDF_CLE__GPIO6_IO07 0x80000000
-				MX6QDL_PAD_GPIO_0__GPIO1_IO00	0x80000000
-				MX6QDL_PAD_NANDF_CS2__CCM_CLKO2 0x130b0
-				MX6QDL_PAD_NANDF_CS3__GPIO6_IO16 0x80000000
-				MX6QDL_PAD_EIM_CS1__GPIO2_IO24 0x80000000
-				MX6QDL_PAD_ENET_RXD0__GPIO1_IO27 0x80000000
-				MX6QDL_PAD_EIM_A25__GPIO5_IO02 0x80000000
-				MX6QDL_PAD_EIM_D23__GPIO3_IO23 0x80000000
-				MX6QDL_PAD_ENET_TXD1__GPIO1_IO29 0x80000000
-				MX6QDL_PAD_EIM_D22__GPIO3_IO22  0x80000000
-				MX6QDL_PAD_NANDF_CS0__GPIO6_IO11 0x80000000
-				MX6QDL_PAD_NANDF_CS1__GPIO6_IO14 0x80000000
-				MX6QDL_PAD_EIM_EB3__GPIO2_IO31 0x80000000
-				MX6QDL_PAD_EIM_D16__GPIO3_IO16 0x80000000
-				MX6QDL_PAD_EIM_DA9__GPIO3_IO09 0x80000000
-				MX6QDL_PAD_GPIO_4__GPIO1_IO04 0x80000000
-				MX6QDL_PAD_GPIO_5__GPIO1_IO05 0x80000000
-				MX6QDL_PAD_EIM_D29__GPIO3_IO29 0x80000000
-				MX6QDL_PAD_GPIO_9__GPIO1_IO09 0x80000000
-				MX6QDL_PAD_GPIO_2__GPIO1_IO02 0x80000000
-				MX6QDL_PAD_SD1_CMD__GPIO1_IO18 0x80000000
-				MX6QDL_PAD_CSI0_MCLK__CCM_CLKO1    0x130b0
+				MX6QDL_PAD_GPIO_4__GPIO1_IO04   	0x80000000
+				MX6QDL_PAD_GPIO_5__GPIO1_IO05   	0x80000000
+                                MX6QDL_PAD_GPIO_6__GPIO1_IO06  		0x80000000
+				MX6QDL_PAD_NANDF_D0__GPIO2_IO00 	0x80000000
+				MX6QDL_PAD_NANDF_D2__GPIO2_IO02 	0x80000000
+				MX6QDL_PAD_NANDF_D3__GPIO2_IO03 	0x80000000
+                                MX6QDL_PAD_NANDF_D4__GPIO2_IO04 	0x80000000
+                                MX6QDL_PAD_NANDF_D5__GPIO2_IO05 	0x80000000
+                                MX6QDL_PAD_NANDF_D6__GPIO2_IO06 	0x80000000
+                                MX6QDL_PAD_NANDF_D7__GPIO2_IO07		0x80000000
+				MX6QDL_PAD_NANDF_ALE__GPIO6_IO08 	0x80000000
+				MX6QDL_PAD_NANDF_CLE__GPIO6_IO07 	0x80000000
+				MX6QDL_PAD_GPIO_0__GPIO1_IO00		0x80000000
+				MX6QDL_PAD_NANDF_CS2__CCM_CLKO2 	0x130b0
+				MX6QDL_PAD_NANDF_CS3__GPIO6_IO16 	0x80000000
+                                MX6QDL_PAD_EIM_CS0__GPIO2_IO23          0x80000000
+				MX6QDL_PAD_EIM_CS1__GPIO2_IO24 		0x80000000
+				/*MX6QDL_PAD_EIM_D22__GPIO3_IO22  	0x80000000*/
+				MX6QDL_PAD_EIM_EB3__GPIO2_IO31 		0x80000000
+				MX6QDL_PAD_EIM_D16__GPIO3_IO16 		0x80000000
+				MX6QDL_PAD_EIM_DA9__GPIO3_IO09 		0x80000000
+				MX6QDL_PAD_EIM_D29__GPIO3_IO29 		0x80000000
+				MX6QDL_PAD_GPIO_9__WDOG1_B              0x80000000
+				MX6QDL_PAD_GPIO_2__GPIO1_IO02 		0x80000000
+				MX6QDL_PAD_SD1_CMD__GPIO1_IO18 		0x80000000
+				MX6QDL_PAD_CSI0_MCLK__CCM_CLKO1    	0x130b0
 			>;
 		};
 	};
 };
 
-&ldb {
-	status = "okay";
-
-	lvds-channel@0 {
-		fsl,data-mapping = "spwg";
-		fsl,data-width = <18>;
-		status = "okay";
-
-		display-timings {
-			native-mode = <&timing0>;
-			timing0: hsd100pxn1 {
-				clock-frequency = <65000000>;
-				hactive = <1024>;
-				vactive = <768>;
-				hback-porch = <220>;
-				hfront-porch = <40>;
-				vback-porch = <21>;
-				vfront-porch = <7>;
-				hsync-len = <60>;
-				vsync-len = <10>;
-			};
-		};
-	};
-
-	lvds-channel@1 {
-		fsl,data-mapping = "spwg";
-		fsl,data-width = <18>;
-		primary;
-		status = "okay";
-
-		display-timings {
-			native-mode = <&timing1>;
-			timing1: hsd100pxn1 {
-				clock-frequency = <65000000>;
-				hactive = <1024>;
-				vactive = <768>;
-				hback-porch = <220>;
-				hfront-porch = <40>;
-				vback-porch = <21>;
-				vfront-porch = <7>;
-				hsync-len = <60>;
-				vsync-len = <10>;
-			};
-		};
-	};
-};
-
 &mipi_csi {
-	status = "okay";
+	status = "disabled";
 	ipu_id = <0>;
 	csi_id = <1>;
 	v_channel = <0>;
-	lanes = <2>;
-};
-
-&mipi_dsi {
-	dev_id = <0>;
-	disp_id = <1>;
-	lcd_panel = "TRULY-WVGA";
-	disp-power-on-supply = <&reg_mipi_dsi_pwr_on>;
-	resets = <&mipi_dsi_reset>;
-	status = "okay";
+        resets = <&mipi_csi_reset>;
+	lanes = <4>;
 };
 
 &dcic1 {
@@ -540,11 +498,23 @@
 };
 
 &pcie {
-	power-on-gpio = <&gpio3 19 0>;
-	reset-gpio = <&gpio7 12 0>;
-	status = "okay";
+        /*power-on-gpio = <&gpio1 17 0>;*/
+        reset-gpio = <&gpio1 20 0>;
+        reset-delay-us = <50>;
+        status = "okay";
 };
 
+&spdif {
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_spdif_2>;
+        status = "okay";
+};
+
+&pwm1 {
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_pwm1_1>;
+        status = "okay";
+};
 
 &pwm2 {
 	pinctrl-names = "default";
@@ -583,17 +553,17 @@
 
 
 &usbh1 {
-	gpios = <&gpio1 26 1>;
-        gpios = <&gpio1 27 2>;
+        vbus-supply = <&reg_usb_h1_vbus>;
+        gpios = <&gpio1 26 1>, <&gpio1 27 2>;
 	status = "okay";
 };
 
 &usbotg {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_usbotg_2>;
-        gpios = <&gpio1 29 1>;
-        gpios = <&gpio1 30 2>;
-	/*disable-over-current;*/
+        vbus-supply = <&reg_usb_otg_vbus>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_usbotg_2>;
+        gpios = <&gpio1 29 1>, <&gpio1 30 2>;
+	disable-over-current;
 	status = "okay";
 };
 
@@ -616,7 +586,7 @@
 	no-1-8-v;
 	keep-power-in-suspend;
 	enable-sdio-wakeup;
-	status = "okay";
+	status = "disabled";
 };
 
 &usdhc4 {
@@ -639,8 +609,4 @@
         pinctrl-names = "default";
         pinctrl-0 = <&pinctrl_flexcan2_1>;
         status = "okay";
-};
-
-&vpu {
-	pu-supply = <&pu_dummy>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
 };
