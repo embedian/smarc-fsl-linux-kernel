@@ -33,6 +33,18 @@
 		status = "okay";
 	};*/
 
+       	battery: bq2477x@1 {
+               	compatible = "ti,bq2477x";
+               	pinctrl-names = "default";
+               	ti,dac-ichg = <2240>;
+               	ti,dac-v = <9008>;
+               	ti,dac-minsv = <4608>;
+               	ti,dac-iin = <4992>;
+               	ti,wdt-refresh-timeout = <40>;
+               	ti,charger-detect-gpio = <&gpio3 22 GPIO_ACTIVE_LOW>;
+               	status = "okay";
+              	};
+
 	memory {
 		reg = <0x10000000 0x40000000>;
 	};
@@ -209,12 +221,6 @@
 		status = "disabled";
 	};
 
-        mipi_csi_reset: mipi-csi-reset {
-                compatible = "gpio-reset";
-                reset-gpios = <&gpio2 06 GPIO_ACTIVE_LOW>,<&gpio2 03 GPIO_ACTIVE_LOW>; /*GPIO2 and GPIO3*/
-                reset-delay-us = <50>;
-                #reset-cells = <0>;
-        };
 };
 
 &audmux {
@@ -253,7 +259,8 @@
         pinctrl-0 = <&pinctrl_ecspi2 &pinctrl_ecspi2_cs>;
         status = "okay";
 
-        flash: mx25u3235f0@0 {
+       	/*SPI NOR Flash is lock up by U-Boot. Turn on GPIO4_20 if user need to access from kernel.*/
+	/*flash: mx25u3235f0@0 {
                 #address-cells = <1>;
                 #size-cells = <1>;
                 compatible = "macronix,mx25u3235f";
@@ -274,7 +281,7 @@
                                 reg = <0x180000 0x200000>;
                         };
 
-        };
+        };*/
 
 	spidev@0x02 {
                 #address-cells = <1>;
@@ -443,6 +450,9 @@
                                 MX6QDL_PAD_GPIO_9__WDOG1_B              0x80000000
                                 MX6QDL_PAD_GPIO_2__GPIO1_IO02 		0x80000000
                                 MX6QDL_PAD_SD1_CMD__GPIO1_IO18 		0x80000000
+				MX6QDL_PAD_EIM_D30__GPIO3_IO30          0x410
+				MX6QDL_PAD_EIM_D31__GPIO3_IO31          0x410
+				MX6QDL_PAD_DI0_PIN4__GPIO4_IO20    	0x80000000
                                 MX6QDL_PAD_CSI0_MCLK__CCM_CLKO1    	0x130b0
 			>;
 		};
@@ -567,7 +577,6 @@
 				MX6QDL_PAD_DI0_PIN15__IPU1_DI0_PIN15       0xe1
 				MX6QDL_PAD_DI0_PIN2__IPU1_DI0_PIN02        0xe1
 				MX6QDL_PAD_DI0_PIN3__IPU1_DI0_PIN03        0xe1
-				MX6QDL_PAD_DI0_PIN4__IPU1_DI0_PIN04        0x80000000
 				MX6QDL_PAD_DISP0_DAT0__IPU1_DISP0_DATA00   0xe1
 				MX6QDL_PAD_DISP0_DAT1__IPU1_DISP0_DATA01   0xe1
 				MX6QDL_PAD_DISP0_DAT2__IPU1_DISP0_DATA02   0xe1
@@ -775,7 +784,6 @@
 	ipu_id = <0>;
 	csi_id = <1>;
 	v_channel = <0>;
-        resets = <&mipi_csi_reset>;
 	lanes = <4>;
 };
 
