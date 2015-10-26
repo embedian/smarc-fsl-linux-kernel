@@ -157,7 +157,7 @@
 			num-lanes = <1>;
 			interrupts = <0 123 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "msi";
-			interrupt-cells = <1>;
+			#interrupt-cells = <1>;
 			interrupt-map-mask = <0 0 0 0x7>;
 			interrupt-map = <0 0 0 1 &gpc 0 123 IRQ_TYPE_LEVEL_HIGH>,
 			                <0 0 0 2 &gpc 0 122 IRQ_TYPE_LEVEL_HIGH>,
