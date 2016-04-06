@@ -1,0 +1,61 @@
+/*
+ * Copyright (C) 2015 Embedian, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+
+#include "imx6q-smarcfimx6.dts"
+
+/* LVDS Panel for AUO G070VW01 V0 7-inch Color TFT 800x480 Panel Settings */
+&ldb {
+        status = "okay";
+
+        lvds-channel@0 {
+                fsl,data-mapping = "spwg";
+                fsl,data-width = <24>;
+                primary;
+                status = "okay";
+
+                display-timings {
+                        native-mode = <&timing0>;
+                        timing0: g070vw01 {
+				clock-frequency = <33300000>;
+                                hactive = <800>;
+                                vactive = <480>;
+                                hback-porch = <64>;
+                                hfront-porch = <64>;
+                                vback-porch = <12>;
+                                vfront-porch = <4>;
+                                hsync-len = <128>;
+                                vsync-len = <12>;
+				/*hsync-active = <0>;
+				vsync-active = <0>;*/
+                        };
+                };
+        };
+
+        lvds-channel@1 {
+                fsl,data-mapping = "spwg";
+                fsl,data-width = <24>;
+                status = "okay";
+
+                display-timings {
+                        native-mode = <&timing1>;
+                        timing1: g070vw01 {
+				clock-frequency = <33300000>;
+                                hactive = <800>;
+                                vactive = <480>;
+                                hback-porch = <64>;
+                                hfront-porch = <64>;
+                                vback-porch = <12>;
+                                vfront-porch = <4>;
+                                hsync-len = <128>;
+                                vsync-len = <12>;
+                                /*hsync-active = <0>;
+                                vsync-active = <0>;*/
+                        };
+                };
+        };
+};
