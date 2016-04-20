@@ -21,18 +21,6 @@
 		mxcfb3 = &mxcfb4;
 	};
 
-        battery: bq2477x@1 {
-                compatible = "ti,bq2477x";
-                pinctrl-names = "default";
-                ti,dac-ichg = <2240>;
-                ti,dac-v = <9008>;
-                ti,dac-minsv = <4608>;
-                ti,dac-iin = <4992>;
-                ti,wdt-refresh-timeout = <40>;
-                ti,charger-detect-gpio = <&gpio3 22 GPIO_ACTIVE_LOW>;
-                status = "okay";
-                };
-
 	memory: memory {
 		reg = <0x10000000 0x40000000>;
 	};
@@ -375,15 +363,12 @@
                 reg = <0x57>;
         };
 
-        bq2477x@09 {
-                compatible = "ti,bq2477x";
+        battery: bq24735@09 {
+                compatible = "ti,bq24735";
                 reg = <0x09>;
-                ti,dac-ichg = <2240>;
-                ti,dac-v = <9008>;
-                ti,dac-minsv = <4608>;
-                ti,dac-iin = <4992>;
-                ti,wdt-refresh-timeout = <40>;
-                ti,charger-detect-gpio = <&gpio3 22 GPIO_ACTIVE_LOW>;
+		ti,charge-current = <128>;
+		ti,input-current = <256>;
+		ti,charge-voltage = <5000>;
          };
 };
 
