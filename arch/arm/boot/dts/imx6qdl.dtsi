@@ -160,10 +160,10 @@
 			interrupt-names = "inta", "msi";
 			#interrupt-cells = <1>;
 			interrupt-map-mask = <0 0 0 0x7>;
-			interrupt-map = <0 0 0 1 &gpc 0 123 IRQ_TYPE_LEVEL_HIGH>,
-			                <0 0 0 2 &gpc 0 122 IRQ_TYPE_LEVEL_HIGH>,
-			                <0 0 0 3 &gpc 0 121 IRQ_TYPE_LEVEL_HIGH>,
-			                <0 0 0 4 &gpc 0 120 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-map = <0 0 0 1 &intc 0 123 IRQ_TYPE_LEVEL_HIGH>,
+			                <0 0 0 2 &intc 0 122 IRQ_TYPE_LEVEL_HIGH>,
+			                <0 0 0 3 &intc 0 121 IRQ_TYPE_LEVEL_HIGH>,
+			                <0 0 0 4 &intc 0 120 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&clks IMX6QDL_CLK_PCIE_REF_125M>,
 				 <&clks IMX6QDL_CLK_SATA_REF_100M>,
 				 <&clks IMX6QDL_CLK_LVDS1_GATE>, <&clks IMX6QDL_CLK_PCIE_AXI>;
