@@ -72,7 +72,3 @@
 &pxp {
 	status = "okay";
 };
-
-&vpu {
-    pu-supply = <&reg_pu>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
-};

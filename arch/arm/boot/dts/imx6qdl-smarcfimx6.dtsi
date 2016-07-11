@@ -80,17 +80,6 @@
                         regulator-max-microvolt = <3300000>;
                         regulator-always-on;
                 };
-
-		reg_sensor: regulator@4 {
-			compatible = "regulator-fixed";
-			reg = <4>;
-			regulator-name = "sensor-supply";
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-			gpio = <&gpio2 31 0>;
-			startup-delay-us = <500>;
-			enable-active-high;
-		};
 	};
 
         sound-sgtl5000 {
@@ -211,7 +200,8 @@
 };
 
 &cpu0 {
-        pu-supply = <&reg_pu>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
+        arm-supply = <&reg_arm>;
+        soc-supply = <&reg_soc>;
 };
 
 &ecspi1 {
@@ -283,18 +273,18 @@
 
 &fec {
 	pinctrl-names = "default";
-        pinctrl-0 = <&pinctrl_enet>, <&pinctrl_enet_irq>;
+        pinctrl-0 = <&pinctrl_enet>;
 	phy-mode = "rgmii";
-	fsl,magic-packet;
+        interrupts = <&pinctrl_enet_irq>;
+	/*fsl,magic-packet;*/
 	status = "okay";
 };
 
 &gpc {
         /* use ldo-enable, u-boot will check it and configure */
-        fsl,ldo-bypass = <1>;
+        fsl,ldo-bypass = <0>;
         /* watchdog select of reset source */
         fsl,wdog-reset = <1>;
-        pu-supply = <&reg_pu>; /* ldo-bypass:use pu_dummy if VDDSOC share with VDDPU */
 };
 
 &dcic1 {
@@ -356,6 +346,8 @@
         s35390a: s35390a@30 {
                 compatible = "s35390a";
                 reg = <0x30>;
+		interrupt-parent = <&gpio3>;
+		interrupts = <30 0>, <31 0>;
         };
 
         cape_eeprom0: cape_eeprom@57 {
@@ -470,8 +462,8 @@
 				MX6QDL_PAD_EIM_D29__GPIO3_IO29          0x80000000
                                 MX6QDL_PAD_GPIO_2__GPIO1_IO02           0x80000000
                                 MX6QDL_PAD_SD1_CMD__GPIO1_IO18          0x80000000
-                                MX6QDL_PAD_EIM_D30__GPIO3_IO30          0x410
-                                MX6QDL_PAD_EIM_D31__GPIO3_IO31          0x410
+                                /*MX6QDL_PAD_EIM_D30__GPIO3_IO30          0x410
+                                MX6QDL_PAD_EIM_D31__GPIO3_IO31          0x410*/
                                 MX6QDL_PAD_DI0_PIN4__GPIO4_IO20         0x80000000
                                 MX6QDL_PAD_CSI0_MCLK__CCM_CLKO1         0x130b0
 			>;
@@ -896,7 +888,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc3>;
 	bus-width = <8>;
-	cd-gpios = <&gpio2 0 GPIO_ACTIVE_LOW>;
+	cd-gpios = <&gpio6 10 GPIO_ACTIVE_LOW>;
 	wp-gpios = <&gpio2 1 GPIO_ACTIVE_HIGH>;
 	no-1-8-v;
 	keep-power-in-suspend;
