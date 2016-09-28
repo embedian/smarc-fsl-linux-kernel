@@ -9,6 +9,8 @@
 #ifndef __LINUX_IMX_SEMA4_H__
 #define __LINUX_IMX_SEMA4_H__
 
+#include <linux/wait.h>
+
 #define SEMA4_NUM_DEVICES	1
 #define SEMA4_NUM_GATES		16
 
