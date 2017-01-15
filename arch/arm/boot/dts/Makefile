@@ -285,6 +285,16 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-sabresd-enetirq.dtb \
 	imx6dl-wandboard.dtb \
 	imx6dl-wandboard-revb1.dtb \
+	imx6dl-smarcfimx6.dtb \
+	imx6dl-smarcfimx6-wvga.dtb \
+	imx6dl-smarcfimx6-xga.dtb \
+	imx6dl-smarcfimx6-wxga.dtb \
+	imx6dl-smarcfimx6-1080p.dtb \
+       	imx6q-smarcfimx6.dtb \
+       	imx6q-smarcfimx6-wvga.dtb \
+       	imx6q-smarcfimx6-xga.dtb \
+       	imx6q-smarcfimx6-wxga.dtb \
+       	imx6q-smarcfimx6-1080p.dtb \
 	imx6q-arm2.dtb \
 	imx6q-arm2-hsic.dtb \
 	imx6q-pop-arm2.dtb \
