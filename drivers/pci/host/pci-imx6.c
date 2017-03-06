@@ -57,9 +57,15 @@ struct imx6_pcie {
 	struct pcie_port	pp;
 	struct regmap		*iomuxc_gpr;
 	struct regmap		*reg_src;
+	/*struct regmap		*gpc;*/
 	void __iomem		*mem_base;
 	struct regulator	*pcie_phy_regulator;
 };
+
+/* Parameters for the waiting for PCIe PHY PLL to lock on i.MX7 */
+#define PHY_PLL_LOCK_WAIT_MAX_RETRIES	2000
+#define PHY_PLL_LOCK_WAIT_USLEEP_MIN	50
+#define PHY_PLL_LOCK_WAIT_USLEEP_MAX	200
 
 /* PCIe Root Complex registers (memory-mapped) */
 #define PCIE_RC_LCR				0x7c
@@ -332,6 +338,26 @@ static void pci_imx_phy_pll_locked(struct imx6_pcie *imx6_pcie)
 	}
 }
 
+static void imx7d_pcie_wait_for_phy_pll_lock(struct imx6_pcie *imx6_pcie)
+{
+	u32 val;
+	unsigned int retries;
+	struct pcie_port *pp = &imx6_pcie->pp;
+	struct device *dev = pp->dev;
+
+	for (retries = 0; retries < PHY_PLL_LOCK_WAIT_MAX_RETRIES; retries++) {
+		regmap_read(imx6_pcie->iomuxc_gpr, IOMUXC_GPR22, &val);
+
+		if (val & BIT(31))
+			return;
+
+		usleep_range(PHY_PLL_LOCK_WAIT_USLEEP_MIN,
+			     PHY_PLL_LOCK_WAIT_USLEEP_MAX);
+	}
+
+	dev_err(dev, "PCIe PLL lock timeout\n");
+}
+
 static int imx6_pcie_deassert_core_reset(struct pcie_port *pp)
 {
 	int ret;
@@ -408,7 +434,8 @@ static int imx6_pcie_deassert_core_reset(struct pcie_port *pp)
 		regmap_update_bits(imx6_pcie->reg_src, 0x2c, BIT(2), 0);
 
 		/* wait for phy pll lock firstly. */
-		pci_imx_phy_pll_locked(imx6_pcie);
+		/*pci_imx_phy_pll_locked(imx6_pcie);*/
+		imx7d_pcie_wait_for_phy_pll_lock(imx6_pcie);
 	} else if (is_imx6sx_pcie(imx6_pcie)) {
 		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR5,
 				IMX6SX_GPR5_PCIE_BTNRST, 0);
@@ -443,12 +470,35 @@ static void imx6_pcie_init_phy(struct pcie_port *pp)
 	struct imx6_pcie *imx6_pcie = to_imx6_pcie(pp);
 
 	if (is_imx7d_pcie(imx6_pcie)) {
+		/*unsigned int reg, mapping;*/
 		/* Enable PCIe PHY 1P0D */
 		regulator_set_voltage(imx6_pcie->pcie_phy_regulator,
 				1000000, 1000000);
 		ret = regulator_enable(imx6_pcie->pcie_phy_regulator);
 		if (ret)
 			dev_err(pp->dev, "failed to enable pcie regulator.\n");
+
+		/*
+		 * Now that PHY regulator is enabled, do sofware
+		 * power-up request by mapping PHY in A7 domain and
+		 * setting power-up request bit
+		 */
+		/*regmap_read(imx6_pcie->gpc, 0xec, &mapping);
+		regmap_write(imx6_pcie->gpc, 0xec,
+			     mapping | BIT(3));
+
+		regmap_update_bits(imx6_pcie->gpc, 0xf8,
+				   BIT(1),
+				   BIT(1));*/
+		/*
+		 * As per "5.5.9.4 Example Code 4" in IMX7DRM.pdf wait
+		 * for PUP_REQ bit to be cleared
+		 */
+		/*while (!regmap_read(imx6_pcie->gpc,
+				    0xf8, &reg) &&
+		       reg & BIT(1))
+			;
+		regmap_write(imx6_pcie->gpc, 0xec, mapping);*/
 
 		/* pcie phy ref clock select; 1? internal pll : external osc */
 		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
@@ -1186,8 +1236,20 @@ static int __init imx6_pcie_probe(struct platform_device *pdev)
 				"imx7d pcie phy src missing or invalid\n");
 			return PTR_ERR(imx6_pcie->reg_src);
 		}
+                /*imx6_pcie->gpc =
+                        syscon_regmap_lookup_by_compatible("fsl,imx7d-gpc");
+                if (IS_ERR(imx6_pcie->gpc)) {
+                        dev_err(&pdev->dev,
+                                "unable to find gpc registers\n");
+                        return PTR_ERR(imx6_pcie->gpc);
+                }*/
 		imx6_pcie->pcie_phy_regulator = devm_regulator_get(pp->dev,
 				"pcie-phy");
+		if (IS_ERR(imx6_pcie->pcie_phy_regulator)) {
+			dev_err(&pdev->dev,
+				"imx7d pcie phy src missing or invalid\n");
+			return PTR_ERR(imx6_pcie->pcie_phy_regulator);
+		}
 	} else if (is_imx6sx_pcie(imx6_pcie)) {
 		imx6_pcie->pcie_inbound_axi = devm_clk_get(&pdev->dev,
 				"pcie_inbound_axi");
