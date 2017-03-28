@@ -339,8 +339,7 @@
                 pinctrl-names = "default";
                 pinctrl-0 = <&pinctrl_sgtl5000>;
                 VDDA-supply = <&reg_2p5v>;
-                VDDIO-supply = <&reg_3p3v>;
-                VDDD-supply = <&reg_1p8v>;
+                VDDIO-supply = <&reg_1p8v>;
         };
 
         s35390a: s35390a@30 {
