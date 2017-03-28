@@ -530,7 +530,7 @@
 
 		pinctrl_enet_irq: enetirqgrp {
 			fsl,pins = <
-                                MX6QDL_PAD_KEY_ROW2__GPIO4_IO11         0x000b1
+                                MX6QDL_PAD_KEY_ROW2__GPIO4_IO11         0x80000000
 			>;
 		};
 
