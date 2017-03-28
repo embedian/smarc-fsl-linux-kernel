@@ -794,7 +794,6 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcie>;
 	reset-gpio = <&gpio1 20 0>;
-        reset-delay-us = <50>;
 	status = "okay";
 };
 
