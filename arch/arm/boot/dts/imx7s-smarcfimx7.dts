@@ -20,7 +20,7 @@
 	backlight {
 		compatible = "pwm-backlight";
                 enable-gpios = <&gpio1 2 GPIO_ACTIVE_HIGH>; /* Backlight Enable Pin*/
-		pwms = <&pwm4 0 5000000>;
+		pwms = <&pwm1 0 5000000>;
 		brightness-levels = <0 4 8 16 32 64 128 255>;
 		default-brightness-level = <7>;
 		status = "okay";
@@ -222,6 +222,10 @@
 	port {
 		csi_mipi_ep: endpoint1 {
 			remote-endpoint = <&csi_ep>;
+                        data-lanes = <2>;
+                        csis-hs-settle = <13>;
+                        csis-clk-settle = <2>;
+                        csis-wclk;
 		};
 	};
 };
@@ -300,8 +304,8 @@
 			};
 
 			vgen1_reg: vldo1 {
-                                regulator-min-microvolt = <1500000>;
-                                regulator-max-microvolt = <1850000>;
+                                regulator-min-microvolt = <1800000>;
+                                regulator-max-microvolt = <3300000>;
 				regulator-always-on;
 			};
 
@@ -410,7 +414,7 @@
 				MX7D_PAD_UART3_RTS_B__GPIO4_IO6		0x80000000      /* GPIO10 */
 				MX7D_PAD_UART3_CTS_B__GPIO4_IO7		0x80000000      /* GPIO11 */
 				MX7D_PAD_SD2_DATA0__GPIO5_IO14		0x80000000      /* SLEEP# */
-				MX7D_PAD_GPIO1_IO09__GPIO1_IO9		0x80000000      /* CHARGER_PRSNT# */
+                                MX7D_PAD_ENET1_RX_CLK__GPIO7_IO13       0x80000000      /* CHARGER_PRSNT# */
 				MX7D_PAD_GPIO1_IO08__GPIO1_IO8		0x80000000      /* CHARGING# */
 				MX7D_PAD_SAI1_RX_SYNC__GPIO6_IO16	0x80000000      /* CARRIER_STBY# */
 				MX7D_PAD_SAI1_RX_BCLK__GPIO6_IO17	0x80000000      /* CARRIER_PWR_ON# */
@@ -827,7 +831,7 @@
 
                 pinctrl_wdog: wdoggrp {
                         fsl,pins = <
-                                MX7D_PAD_ENET1_RX_CLK__WDOG2_WDOG_B     0x74
+                                MX7D_PAD_GPIO1_IO00__WDOD1_WDOG_B       0x74
                         >;
                 };
 	};
@@ -880,18 +884,18 @@
 	status = "okay";
 };
 
-/* GPIO5 configure as pwm1, to use GPIO5 as GPIO disabled this pin */
-
 &pwm1 {
         pinctrl-names = "default";
         pinctrl-0 = <&pinctrl_pwm1>;
         status = "okay";
 };
 
-&pwm4 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_pwm4>;
-	status = "okay";
+/* GPIO5 configure as pwm1, to use GPIO5 as GPIO disabled this pin */
+
+&pwm2 {
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_pwm2>;
+        status = "okay";
 };
 
 &iomuxc_lpsr {
@@ -907,15 +911,15 @@
 
                 pinctrl_pwm1: pwm1grp {
                         fsl,pins = <
-                                MX7D_PAD_GPIO1_IO01__PWM1_OUT     	0x30
+                                MX7D_PAD_GPIO1_IO01__PWM1_OUT           0x30
                         >;
                 };
 
-		pinctrl_pwm4: pwm4grp {
-			fsl,pins = <
-				MX7D_PAD_GPIO1_IO00__PWM4_OUT	  	0x30
-			>;
-		};
+                pinctrl_pwm2: pwm2grp {
+                        fsl,pins = <
+                                MX7D_PAD_GPIO1_IO09__PWM2_OUT           0x30
+                        >;
+                };
 
 		pinctrl_usbotg2_pwr_2: usbotg2-2 {
 			fsl,pins = <
