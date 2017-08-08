@@ -855,7 +855,7 @@
 
                 pinctrl_wdog: wdoggrp {
                         fsl,pins = <
-                                MX7D_PAD_GPIO1_IO00__WDOD1_WDOG_B 	0x74
+                                MX7D_PAD_GPIO1_IO00__WDOD1_WDOG_B	0x74
 	               	>;
                 };
 	};
@@ -1047,4 +1047,10 @@
 	bus-width = <8>;
 	non-removable;
 	status = "okay";
+};
+
+&wdog1 {
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_wdog>;
+        fsl,wdog_b;
 };
