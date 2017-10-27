@@ -19,7 +19,7 @@
  * it 32 as of now. Probably we will never need more than 32. If needed,
  * then increment it in multiple of 32.
  */
-#define MAX_MSI_IRQS			32
+#define MAX_MSI_IRQS			64
 #define MAX_MSI_CTRLS			(MAX_MSI_IRQS / 32)
 
 struct pcie_port {
