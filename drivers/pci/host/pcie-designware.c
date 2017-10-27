@@ -291,6 +291,9 @@ static int assign_irq(int no_irqs, struct msi_desc *desc, int *pos)
 	}
 
 	*pos = pos0;
+	desc->nvec_used = no_irqs;
+	desc->msi_attrib.multiple = order_base_2(no_irqs);
+
 	return irq;
 
 no_valid_irq:
@@ -327,6 +330,43 @@ static int dw_msi_setup_irq(struct msi_controller *chip, struct pci_dev *pdev,
 
 	return 0;
 }
+#ifdef CONFIG_PCI_MSI
+static int dw_msi_setup_irqs(struct msi_controller *chip, struct pci_dev *pdev,
+			     int nvec, int type)
+{
+	int irq, pos;
+	struct msi_desc *desc;
+	struct msi_msg msg;
+	struct pcie_port *pp = sys_to_pcie(pdev->bus->sysdata);
+
+	if (!pp)
+		return -EINVAL;
+
+	/* MSI-X interrupts are not supported */
+	if (type == PCI_CAP_ID_MSIX)
+		return -EINVAL;
+
+	WARN_ON(!list_is_singular(&pdev->msi_list));
+	desc = list_entry(pdev->msi_list.next, struct msi_desc, list);
+
+	irq = assign_irq(nvec, desc, &pos);
+	if (irq < 0)
+		return irq;
+
+	msg.address_lo = virt_to_phys((void *)pp->msi_data);
+	msg.address_hi = 0x0;
+	msg.data = pos;
+	write_msi_msg(irq, &msg);
+
+	return 0;
+}
+#else
+static int dw_msi_setup_irqs(struct msi_controller *chip, struct pci_dev *pdev,
+			     int nvec, int type)
+{
+	return -ENOSYS;
+}
+#endif
 
 static void dw_msi_teardown_irq(struct msi_controller *chip, unsigned int irq)
 {
@@ -339,6 +379,7 @@ static void dw_msi_teardown_irq(struct msi_controller *chip, unsigned int irq)
 
 static struct msi_controller dw_pcie_msi_chip = {
 	.setup_irq = dw_msi_setup_irq,
+	.setup_irqs = dw_msi_setup_irqs,
 	.teardown_irq = dw_msi_teardown_irq,
 };
 
