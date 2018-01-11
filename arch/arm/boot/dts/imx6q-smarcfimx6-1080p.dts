@@ -1,0 +1,58 @@
+/*
+ * Copyright (C) 2015 Embedian, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+
+#include "imx6q-smarcfimx6.dts"
+
+/* Dual-Channel LVDS Panel for AUO G240HW01 V0 24-inch Color TFT 1920x1080 Panel Settings */
+&ldb {
+        status = "okay";
+        split-mode;
+
+        lvds-channel@0 {
+                fsl,data-mapping = "spwg";
+                fsl,data-width = <24>;
+                primary;
+                status = "okay";
+
+                display-timings {
+                        native-mode = <&timing0>;
+                        timing0: g24hw01 {
+                                clock-frequency = <130005200>;
+                                hactive = <1920>;
+                                vactive = <1080>;
+                                hback-porch = <100>;
+                                hfront-porch = <40>;
+                                vback-porch = <30>;
+                                vfront-porch = <3>;
+                                hsync-len = <10>;
+                                vsync-len = <2>;
+                        };
+                };
+        };
+
+        lvds-channel@1 {
+                fsl,data-mapping = "spwg";
+                fsl,data-width = <24>;
+                status = "okay";
+
+                display-timings {
+                        native-mode = <&timing1>;
+                        timing1: g24hw01 {
+                                clock-frequency = <130005200>;
+                                hactive = <1920>;
+                                vactive = <1080>;
+                                hback-porch = <100>;
+                                hfront-porch = <40>;
+                                vback-porch = <30>;
+                                vfront-porch = <3>;
+                                hsync-len = <10>;
+                                vsync-len = <2>;
+                        };
+                };
+        };
+};
