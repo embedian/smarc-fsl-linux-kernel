@@ -233,7 +233,8 @@
         pinctrl-0 = <&pinctrl_ecspi2 &pinctrl_ecspi2_cs>;
         status = "okay";
 
-        flash: mx25u3235f@0 {
+        /*SPI NOR Flash is lock up by U-Boot. Turn on GPIO4_20 if user need to access from kernel.*/
+        /*flash: mx25u3235f@0 {
                 #address-cells = <1>;
                 #size-cells = <1>;
                 compatible = "macronix,mx25u3235f";
@@ -254,7 +255,7 @@
                                 reg = <0x180000 0x200000>;
                         };
 
-        };
+        };*/
 
         spidev@0x02 {
                 #address-cells = <1>;
