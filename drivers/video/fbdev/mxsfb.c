@@ -1472,8 +1472,8 @@ static int mxsfb_dispdrv_init(struct platform_device *pdev,
 			return PTR_ERR(host->dispdrv);
 
 		host->dispdrv = NULL;
-		dev_info(dev, "failed to find mxc display driver %s\n",
-			 disp_dev);
+		/*dev_info(dev, "failed to find mxc display driver %s\n",
+			 disp_dev);*/	/* We don't use mxc driver, ignore this message. */
 	} else
 		dev_info(dev, "registered mxc display driver %s\n",
 			 disp_dev);
