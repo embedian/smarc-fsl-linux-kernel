@@ -852,12 +852,6 @@
 				MX7D_PAD_SD3_STROBE__SD3_STROBE         0x1b
 			>;
 		};
-
-                pinctrl_wdog: wdoggrp {
-                        fsl,pins = <
-                                MX7D_PAD_GPIO1_IO00__WDOD1_WDOG_B	0x74
-	               	>;
-                };
 	};
 };
 
@@ -968,6 +962,12 @@
 				MX7D_PAD_GPIO1_IO03__SAI3_MCLK         	0x1f
 			>;
 		};
+
+                pinctrl_wdog: wdoggrp {
+                        fsl,pins = <
+                                MX7D_PAD_GPIO1_IO00__WDOD1_WDOG_B       0x74
+                        >;
+                };
 	};
 };
 
