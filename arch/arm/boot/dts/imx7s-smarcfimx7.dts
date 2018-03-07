@@ -42,7 +42,7 @@
 
 /dts-v1/;
 
-#include "imx7s.dtsi"
+#include "imx7solo.dtsi"
 
 / {
 	model = "Embedian i.MX7S SMARC 2.0 Module";
@@ -221,6 +221,21 @@
 	assigned-clock-rates = <884736000>;
 };
 
+&csi1 {
+        csi-mux-mipi = <&gpr 0x14 4>;
+        status = "okay";
+
+        port {
+                csi_ep: endpoint {
+                        remote-endpoint = <&csi_mipi_ep>;
+                };
+        };
+};
+
+&epxp {
+        status = "okay";
+};
+
 &fec1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_enet1>;
@@ -247,6 +262,20 @@
 			reg = <0x7>;
 		};
 	};
+};
+
+&mipi_csi {
+        clock-frequency = <240000000>;
+        status = "okay";
+        port {
+                csi_mipi_ep: endpoint1 {
+                        remote-endpoint = <&csi_ep>;
+                        data-lanes = <2>;
+                        csis-hs-settle = <13>;
+                        csis-clk-settle = <2>;
+                        csis-wclk;
+                };
+        };
 };
 
 &flexcan1 {
@@ -596,7 +625,7 @@
 &wdog1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_wdog>;
-        fsl,ext-reset-output;
+        fsl,wdog_b;
 };
 
 &iomuxc {
