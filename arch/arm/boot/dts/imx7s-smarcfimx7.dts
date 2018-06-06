@@ -144,8 +144,6 @@
         cs-gpios = <&gpio4 19 GPIO_ACTIVE_HIGH>, <&gpio4 0 GPIO_ACTIVE_HIGH>;
         pinctrl-names = "default";
         pinctrl-0 = <&pinctrl_ecspi1 &pinctrl_ecspi1_cs>;
-        dmas = <&sdma 36 4 0>, <&sdma 37 4 0>;
-        dma-names = "rx", "tx";
         status = "okay";
 
         spidev1: spidev@0 {
@@ -166,8 +164,6 @@
         pinctrl-names = "default";
         pinctrl-0 = <&pinctrl_ecspi2 &pinctrl_ecspi2_cs>;
         cs-gpios = <&gpio4 23 GPIO_ACTIVE_HIGH>;
-        dmas = <&sdma 38 4 0>, <&sdma 39 4 0>;
-        dma-names = "rx", "tx";
         status = "okay";
 
         flash: mx25u3235f@0 {
@@ -200,8 +196,6 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi3 &pinctrl_ecspi3_cs>;
         cs-gpios = <&gpio6 22 GPIO_ACTIVE_HIGH>, <&gpio5 9 GPIO_ACTIVE_HIGH>;
-        dmas = <&sdma 40 4 0>, <&sdma 41 4 0>;
-        dma-names = "rx", "tx";
 	status = "okay";
 
         spidev3: spidev@0 {
@@ -612,7 +606,6 @@
 
 &usdhc3 {
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-	pinctrl-0 = <&pinctrl_usdhc3>;
 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
 	assigned-clocks = <&clks IMX7D_USDHC3_ROOT_CLK>;
