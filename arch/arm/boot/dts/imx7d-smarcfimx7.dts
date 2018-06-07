@@ -639,12 +639,12 @@
 };
 
 &usdhc3 {
-	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
-	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
+	pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_usdhc3>;
 	assigned-clocks = <&clks IMX7D_USDHC3_ROOT_CLK>;
 	assigned-clock-rates = <400000000>;
 	bus-width = <8>;
+        fsl,tuning-step = <2>;
 	non-removable;
 	status = "okay";
 };
@@ -687,6 +687,7 @@
                                 MX7D_PAD_ENET1_COL__GPIO7_IO15          0x80000000      /* ENET1_INT# */
                                 MX7D_PAD_ENET1_RX_CLK__GPIO7_IO13       0x80000000      /* ENET2_INT# */
                                 MX7D_PAD_ENET1_CRS__GPIO7_IO14          0x80000000      /* WDT_TIME_OUT# */
+				MX7D_PAD_SD3_RESET_B__GPIO6_IO11        0x5d		/* eMMC_Reset# */
 			>;
 		};
 
@@ -1046,17 +1047,17 @@
 
 		pinctrl_usdhc3: usdhc3grp {
 			fsl,pins = <
-				MX7D_PAD_SD3_CMD__SD3_CMD		0x59
-				MX7D_PAD_SD3_CLK__SD3_CLK		0x19
-				MX7D_PAD_SD3_DATA0__SD3_DATA0		0x59
-				MX7D_PAD_SD3_DATA1__SD3_DATA1		0x59
-				MX7D_PAD_SD3_DATA2__SD3_DATA2		0x59
-				MX7D_PAD_SD3_DATA3__SD3_DATA3		0x59
-				MX7D_PAD_SD3_DATA4__SD3_DATA4		0x59
-				MX7D_PAD_SD3_DATA5__SD3_DATA5		0x59
-				MX7D_PAD_SD3_DATA6__SD3_DATA6		0x59
-				MX7D_PAD_SD3_DATA7__SD3_DATA7		0x59
-				MX7D_PAD_SD3_STROBE__SD3_STROBE		0x19
+				MX7D_PAD_SD3_CMD__SD3_CMD		0x5a
+				MX7D_PAD_SD3_CLK__SD3_CLK		0x1a
+				MX7D_PAD_SD3_DATA0__SD3_DATA0		0x5a
+				MX7D_PAD_SD3_DATA1__SD3_DATA1		0x5a
+				MX7D_PAD_SD3_DATA2__SD3_DATA2		0x5a
+				MX7D_PAD_SD3_DATA3__SD3_DATA3		0x5a
+				MX7D_PAD_SD3_DATA4__SD3_DATA4		0x5a
+				MX7D_PAD_SD3_DATA5__SD3_DATA5		0x5a
+				MX7D_PAD_SD3_DATA6__SD3_DATA6		0x5a
+				MX7D_PAD_SD3_DATA7__SD3_DATA7		0x5a
+				MX7D_PAD_SD3_STROBE__SD3_STROBE		0x1a
 			>;
 		};
 
