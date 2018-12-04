@@ -848,7 +848,7 @@
 
 &usb_dwc3_0 {
 	status = "okay";
-	dr_mode = "otg";
+	dr_mode = "host";
 };
 
 &usb3_phy1 {
