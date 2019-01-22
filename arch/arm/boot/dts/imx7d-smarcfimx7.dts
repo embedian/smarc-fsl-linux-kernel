@@ -148,6 +148,8 @@
         cs-gpios = <&gpio4 19 GPIO_ACTIVE_HIGH>, <&gpio4 0 GPIO_ACTIVE_HIGH>;
         pinctrl-names = "default";
         pinctrl-0 = <&pinctrl_ecspi1 &pinctrl_ecspi1_cs>;
+        dmas = <&sdma 0 7 1>, <&sdma 1 7 2>;
+        dma-names = "rx", "tx";
         status = "okay";
 
         spidev1: spidev@0 {
@@ -168,6 +170,8 @@
         pinctrl-names = "default";
         pinctrl-0 = <&pinctrl_ecspi2 &pinctrl_ecspi2_cs>;
         cs-gpios = <&gpio4 23 GPIO_ACTIVE_HIGH>;
+  	dmas = <&sdma 2 7 1>, <&sdma 3 7 2>;
+  	dma-names = "rx", "tx";
         status = "okay";
 
         flash: mx25u3235f@0 {
@@ -200,6 +204,8 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi3 &pinctrl_ecspi3_cs>;
         cs-gpios = <&gpio6 22 GPIO_ACTIVE_HIGH>, <&gpio5 9 GPIO_ACTIVE_HIGH>;
+        dmas = <&sdma 4 7 1>, <&sdma 5 7 2>;
+        dma-names = "rx", "tx";
 	status = "okay";
 
         spidev3: spidev@0 {
