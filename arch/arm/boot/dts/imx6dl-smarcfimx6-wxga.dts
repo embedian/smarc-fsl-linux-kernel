@@ -1,0 +1,57 @@
+/*
+ * Copyright (C) 2015 Embedian, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+
+#include "imx6dl-smarcfimx6.dts"
+
+/* LVDS Panel for AUO G185XW01 V2 18.5-inch Color TFT 1360x768 Panel Settings */
+&ldb {
+        status = "okay";
+
+        lvds-channel@0 {
+                fsl,data-mapping = "spwg";
+                fsl,data-width = <24>;
+                primary;
+                status = "okay";
+
+                display-timings {
+                        native-mode = <&timing0>;
+                        timing0: g185xw01 {
+                                clock-frequency = <78000000>;
+                                hactive = <1360>;
+                                vactive = <768>;
+                                hback-porch = <60>;
+                                hfront-porch = <60>;
+                                vback-porch = <18>;
+                                vfront-porch = <4>;
+                                hsync-len = <120>;
+                                vsync-len = <18>;
+                        };
+                };
+        };
+
+        lvds-channel@1 {
+                fsl,data-mapping = "spwg";
+                fsl,data-width = <24>;
+                status = "okay";
+
+                display-timings {
+                        native-mode = <&timing1>;
+                        timing1: g185xw01 {
+                                clock-frequency = <78000000>;
+                                hactive = <1360>;
+                                vactive = <768>;
+                                hback-porch = <60>;
+                                hfront-porch = <60>;
+                                vback-porch = <18>;
+                                vfront-porch = <4>;
+                                hsync-len = <120>;
+                                vsync-len = <18>;
+                        };
+                };
+        };
+};
