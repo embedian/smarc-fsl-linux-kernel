@@ -277,7 +277,7 @@
 &fec {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_enet>;
-	phy-mode = "rgmii";
+	phy-mode = "rgmii-id";
         interrupts = <&pinctrl_enet_irq>;
 	fsl,magic-packet;
 	status = "okay";
@@ -536,15 +536,15 @@
 
                 pinctrl_flexcan1: flexcan1grp {
                         fsl,pins = <
-                                MX6QDL_PAD_GPIO_7__FLEXCAN1_TX          0x80000000
-                                MX6QDL_PAD_GPIO_8__FLEXCAN1_RX          0x80000000
+                                MX6QDL_PAD_GPIO_7__FLEXCAN1_TX          0x1b0b0
+                                MX6QDL_PAD_GPIO_8__FLEXCAN1_RX          0x1b0b0
                         >;
                 };
 
                 pinctrl_flexcan2: flexcan2grp {
                         fsl,pins = <
-                                MX6QDL_PAD_KEY_COL4__FLEXCAN2_TX        0x80000000
-                                MX6QDL_PAD_KEY_ROW4__FLEXCAN2_RX        0x80000000
+                                MX6QDL_PAD_KEY_COL4__FLEXCAN2_TX        0x1b0b0
+                                MX6QDL_PAD_KEY_ROW4__FLEXCAN2_RX        0x1b0b0
                         >;
                 };
 
