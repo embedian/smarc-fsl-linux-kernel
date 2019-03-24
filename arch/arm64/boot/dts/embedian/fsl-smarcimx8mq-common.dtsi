@@ -179,10 +179,10 @@
                                 MX8MQ_IOMUXC_GPIO1_IO12_GPIO1_IO12             	0x19   	/*CHARGER_PRSNT#*/
                                 MX8MQ_IOMUXC_SAI3_MCLK_GPIO5_IO2              	0x19   	/*CARRIER_STBY#*/
                                 MX8MQ_IOMUXC_GPIO1_IO08_GPIO1_IO8             	0x19   	/*BATLOW#*/
-                                MX8MQ_IOMUXC_NAND_DATA04_GPIO3_IO10            	0x19    /*USB0_EN_OC#*/
-                                MX8MQ_IOMUXC_NAND_DATA05_GPIO3_IO11            	0x19    /*USB1_EN_OC#*/
-                                MX8MQ_IOMUXC_NAND_DATA06_GPIO3_IO12            	0x19    /*USB2_EN_OC#*/
-                                MX8MQ_IOMUXC_NAND_DATA07_GPIO3_IO13            	0x19    /*USB3_EN_OC#*/
+                                MX8MQ_IOMUXC_NAND_DATA04_GPIO3_IO10            	0x41    /*USB0_EN_OC#*/
+                                MX8MQ_IOMUXC_NAND_DATA05_GPIO3_IO11            	0x41    /*USB1_EN_OC#*/
+                                MX8MQ_IOMUXC_NAND_DATA06_GPIO3_IO12            	0x41    /*USB2_EN_OC#*/
+                                MX8MQ_IOMUXC_NAND_DATA07_GPIO3_IO13            	0x41    /*USB3_EN_OC#*/
 			>;
 		};
 
