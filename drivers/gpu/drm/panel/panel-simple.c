@@ -1259,7 +1259,7 @@ static const struct panel_desc olimex_lcd_olinuxino_43ts = {
  * installation instructions.
  */
 static const struct drm_display_mode ontat_yx700wv03_mode = {
-	.clock = 29500,
+	.clock = 31500,
 	.hdisplay = 800,
 	.hsync_start = 824,
 	.hsync_end = 896,
@@ -1939,6 +1939,96 @@ static const struct panel_desc_dsi panasonic_vvx10f004b00 = {
 	.lanes = 4,
 };
 
+static const struct drm_display_mode auo_g070vw01_mode = {
+	.clock = 29500,
+        .hdisplay = 800,
+        .hsync_start = 800 + 40,
+        .hsync_end = 800 + 40 + 128,
+        .htotal = 800 + 40 + 128 + 88,
+        .vdisplay = 480,
+        .vsync_start = 480 + 10,
+        .vsync_end = 480 + 10 + 2,
+        .vtotal = 480 + 10 + 2 + 33,
+        .vrefresh = 60,
+        .flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
+};
+
+static const struct panel_desc_dsi auo_g070vw01 = {
+	.desc = {
+		.modes = &auo_g070vw01_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 152,
+			.height = 91,
+		},
+		.bus_flags = DRM_BUS_FLAG_DE_LOW,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
+static const struct drm_display_mode auo_g185xw01_mode = {
+        .clock = 85000,
+        .hdisplay = 1368,
+        .hsync_start = 1368 + 72,
+        .hsync_end = 1368 + 72 + 144,
+        .htotal = 1366 + 72 + 144 + 216,
+        .vdisplay = 768,
+        .vsync_start = 768 + 1,
+        .vsync_end = 768 + 1 + 3,
+        .vtotal = 768 + 1 + 3 + 23,
+        .vrefresh = 60,
+       	.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
+};
+
+static const struct panel_desc_dsi auo_g185xw01 = {
+        .desc = {
+                .modes = &auo_g185xw01_mode,
+                .num_modes = 1,
+                .bpc = 8,
+                .size = {
+                        .width = 410,
+                        .height = 230,
+                },
+               	.bus_flags = DRM_BUS_FLAG_DE_LOW,
+        },
+       	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
+        .format = MIPI_DSI_FMT_RGB888,
+        .lanes = 4,
+};
+
+static const struct drm_display_mode auo_g240hw01_mode = {
+        .clock = 148500,
+       	.hdisplay = 1920,
+        .hsync_start = 1920 + 88,
+        .hsync_end = 1920 + 88 + 44,
+        .htotal = 1920 + 88 + 44 + 148,
+        .vdisplay = 1080,
+        .vsync_start = 1080 + 4,
+        .vsync_end = 1080 + 4 + 5,
+        .vtotal = 1080 + 4 + 5 + 36,
+        .vrefresh = 60,
+        .flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
+};
+
+static const struct panel_desc_dsi auo_g240hw01 = {
+        .desc = {
+                .modes = &auo_g240hw01_mode,
+                .num_modes = 1,
+                .bpc = 8,
+                .size = {
+                        .width = 531,
+                        .height = 299,
+                },
+                .bus_flags = DRM_BUS_FLAG_DE_LOW,
+        },
+        .flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
+        .format = MIPI_DSI_FMT_RGB888,
+        .lanes = 4,
+};
+
 static const struct of_device_id dsi_of_match[] = {
 	{
 		.compatible = "auo,b080uan01",
@@ -1956,6 +2046,15 @@ static const struct of_device_id dsi_of_match[] = {
 		.compatible = "panasonic,vvx10f004b00",
 		.data = &panasonic_vvx10f004b00
 	}, {
+               	.compatible = "auo,g070vw01",
+                .data = &auo_g070vw01
+        }, {
+               	.compatible = "auo,g185xw01",
+                .data = &auo_g185xw01
+        }, {
+                .compatible = "auo,g240hw01",
+                .data = &auo_g240hw01
+        }, {
 		/* sentinel */
 	}
 };

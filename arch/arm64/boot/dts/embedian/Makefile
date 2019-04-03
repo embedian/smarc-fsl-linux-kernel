@@ -1,0 +1,10 @@
+dtb-$(CONFIG_ARCH_FSL_IMX8MQ) += fsl-smarcimx8mq.dtb \
+				 fsl-smarcimx8mq-dcss-lvds.dtb \
+				 fsl-smarcimx8mq-dual-display.dtb \
+				 fsl-smarcimx8mq-hdmi-4k.dtb \
+				 fsl-smarcimx8mq-lcdif-lvds.dtb \
+				 fsl-smarcimx8mq-hdmi.dtb
+
+always		:= $(dtb-y)
+subdir-y	:= $(dts-dirs)
+clean-files	:= *.dtb
