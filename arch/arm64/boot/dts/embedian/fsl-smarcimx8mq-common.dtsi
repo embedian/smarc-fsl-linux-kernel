@@ -823,7 +823,7 @@
         pinctrl-names = "default";
         pinctrl-0 = <&pinctrl_uart4>;
         assigned-clocks = <&clk IMX8MQ_CLK_UART4_SRC>;
-        assigned-clock-parents = <&clk IMX8MQ_CLK_25M>;
+        assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_80M>;
         fsl,uart-has-rtscts;
         status = "okay";
 };
