@@ -1,0 +1,2 @@
+#include "fsl-imx8qxp-mek-rpmsg.dts"
+#include "fsl-imx8qxp-mek-ov5640.dtsi"
