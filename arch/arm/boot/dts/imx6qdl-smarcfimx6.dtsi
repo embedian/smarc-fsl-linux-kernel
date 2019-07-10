@@ -111,6 +111,14 @@
 		hdmi-controller = <&hdmi_audio>;
 	};
 
+        watchdog: watchdog {
+                compatible = "linux,wdt-gpio";
+                gpios = <&gpio3 16 GPIO_ACTIVE_LOW>;
+                hw_algo = "toggle";
+                hw_margin_ms = <3000>;
+                always-running;
+        };
+
 	mxcfb1: fb@0 {
 		compatible = "fsl,mxc_sdc_fb";
 		disp_dev = "ldb";
