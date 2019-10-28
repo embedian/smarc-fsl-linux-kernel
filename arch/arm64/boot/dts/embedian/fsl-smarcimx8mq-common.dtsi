@@ -158,16 +158,15 @@
                 pinctrl_hog: hoggrp {
                         fsl,pins = <
                                 MX8MQ_IOMUXC_GPIO1_IO03_GPIO1_IO3               0x19    /*RESET_OUT#*/
-                                MX8MQ_IOMUXC_GPIO1_IO11_GPIO1_IO11              0x19    /*FEC_IRQ#*/
-                                MX8MQ_IOMUXC_NAND_CLE_GPIO3_IO5                 0x19    /*PCIE_WAKE#*/
-                                MX8MQ_IOMUXC_GPIO1_IO09_GPIO1_IO9               0x19    /*LID#*/
-                                MX8MQ_IOMUXC_GPIO1_IO10_GPIO1_IO10              0x19    /*SLEEP#*/
-                                MX8MQ_IOMUXC_GPIO1_IO01_GPIO1_IO1               0x19    /*CHARGING#*/
-                                MX8MQ_IOMUXC_GPIO1_IO12_GPIO1_IO12              0x19    /*CHARGER_PRSNT#*/
+                                MX8MQ_IOMUXC_GPIO1_IO11_GPIO1_IO11              0x41    /*FEC_IRQ#*/
+                                MX8MQ_IOMUXC_NAND_CLE_GPIO3_IO5                 0x41    /*PCIE_WAKE#*/
+                               	MX8MQ_IOMUXC_GPIO1_IO09_GPIO1_IO9               0x41    /*LID#*/
+                               	MX8MQ_IOMUXC_GPIO1_IO12_GPIO1_IO12              0x41    /*SLEEP#*/
+                               	MX8MQ_IOMUXC_GPIO1_IO01_GPIO1_IO1               0x41    /*CHARGING#*/
+                               	MX8MQ_IOMUXC_SAI2_RXC_GPIO4_IO22               0x41    /*CHARGER_PRSNT#*/
                                 MX8MQ_IOMUXC_SAI3_MCLK_GPIO5_IO2                0x19    /*CARRIER_STBY#*/
-                                MX8MQ_IOMUXC_GPIO1_IO08_GPIO1_IO8               0x19    /*BATLOW#*/
+                               	MX8MQ_IOMUXC_SAI2_RXFS_GPIO4_IO21              	0x41    /*BATLOW#*/
                                 MX8MQ_IOMUXC_NAND_DATA04_GPIO3_IO10             0x41    /*USB0_EN_OC#*/
-                                MX8MQ_IOMUXC_NAND_DATA05_GPIO3_IO11             0x41    /*USB1_EN_OC#*/
                                 MX8MQ_IOMUXC_NAND_DATA06_GPIO3_IO12             0x41    /*USB2_EN_OC#*/
                                 MX8MQ_IOMUXC_NAND_DATA07_GPIO3_IO13             0x41    /*USB3_EN_OC#*/
                         >;
@@ -663,9 +662,9 @@
                 status = "disabled";
                 reg = <0x2c>;
                 compatible = "ti,sn65dsi84";
-                enable-gpios = <&gpio4 2 GPIO_ACTIVE_HIGH>;
+                enable-gpios = <&gpio4 28 GPIO_ACTIVE_HIGH>;
                 interrupt-parent = <&gpio4>;
-                interrupts = <4 IRQ_TYPE_EDGE_FALLING>;
+                interrupts = <29 IRQ_TYPE_EDGE_FALLING>;
 
                 /* AUO G070VW01 7-inch 800x480 LVDS Display */
                	sn65dsi84,addresses = < 0x09 0x0A 0x0B 0x0D 0x10 0x11 0x12 0x13
@@ -1108,10 +1107,8 @@
         can1: can@2 {
                 compatible = "microchip,mcp2515";
                 reg = <2>;
-                spi-max-frequency = <16000000>;
+                spi-max-frequency = <20000000>;
                 clocks = <&can_osc>;
-                interrupt-parent = <&gpio3>;
-                interrupts = <18 IRQ_TYPE_EDGE_FALLING>;
                 vdd-supply = <&reg_3p3v>;
                 xceiver-supply = <&reg_5p0v>;
         };
@@ -1119,10 +1116,8 @@
         can2: can@3 {
                 compatible = "microchip,mcp2515";
                 reg = <3>;
-                spi-max-frequency = <16000000>;
+                spi-max-frequency = <20000000>;
                 clocks = <&can_osc>;
-                interrupt-parent = <&gpio3>;
-                interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
                 vdd-supply = <&reg_3p3v>;
                 xceiver-supply = <&reg_5p0v>;
         };
