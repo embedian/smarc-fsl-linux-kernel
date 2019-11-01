@@ -629,6 +629,8 @@ dtb-$(CONFIG_SOC_IMX7D) += \
 	imx7d-sdb-reva-qspi.dtb \
 	imx7d-sdb-reva-touch.dtb \
 	imx7d-sdb-reva-wm8960.dtb \
+        imx7d-smarcfimx7.dtb \
+        imx7s-smarcfimx7.dtb \
 	imx7s-colibri-eval-v3.dtb \
 	imx7s-warp.dtb \
 	imx7d-12x12-ddr3-arm2.dtb \
