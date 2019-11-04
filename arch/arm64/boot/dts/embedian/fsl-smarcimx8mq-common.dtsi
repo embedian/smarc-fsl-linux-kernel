@@ -1107,7 +1107,7 @@
         can1: can@2 {
                 compatible = "microchip,mcp2515";
                 reg = <2>;
-                spi-max-frequency = <20000000>;
+                spi-max-frequency = <12000000>;
                 clocks = <&can_osc>;
                 vdd-supply = <&reg_3p3v>;
                 xceiver-supply = <&reg_5p0v>;
@@ -1116,7 +1116,7 @@
         can2: can@3 {
                 compatible = "microchip,mcp2515";
                 reg = <3>;
-                spi-max-frequency = <20000000>;
+                spi-max-frequency = <12000000>;
                 clocks = <&can_osc>;
                 vdd-supply = <&reg_3p3v>;
                 xceiver-supply = <&reg_5p0v>;
