@@ -1,0 +1,262 @@
+/*
+ * Copyright 2015-2016 Freescale Semiconductor, Inc.
+ * Copyright 2016 Toradex AG
+ * Copyright 2017-2018 NXP
+ * Copyright 2020 Embedian
+ *
+ * This file is dual-licensed: you can use it either under the terms
+ * of the GPL or the X11 license, at your option. Note that this dual
+ * licensing only applies to this file, and not this project as a
+ * whole.
+ *
+ *  a) This file is free software; you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation; either version 2 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This file is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ * Or, alternatively,
+ *
+ *  b) Permission is hereby granted, free of charge, to any person
+ *     obtaining a copy of this software and associated documentation
+ *     files (the "Software"), to deal in the Software without
+ *     restriction, including without limitation the rights to use,
+ *     copy, modify, merge, publish, distribute, sublicense, and/or
+ *     sell copies of the Software, and to permit persons to whom the
+ *     Software is furnished to do so, subject to the following
+ *     conditions:
+ *
+ *     The above copyright notice and this permission notice shall be
+ *     included in all copies or substantial portions of the Software.
+ *
+ *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ *     OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+#include "imx7s.dtsi"
+#include <dt-bindings/reset/imx7-reset.h>
+
+/ {
+	reserved-memory {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges;
+
+		/* global autoconfigured region for contiguous allocations */
+		linux,cma {
+			compatible = "shared-dma-pool";
+			reusable;
+			size = <0x6400000>;
+			linux,cma-default;
+		};
+	};
+
+	soc {
+		busfreq {
+			compatible = "fsl,imx_busfreq";
+			fsl,max_ddr_freq = <533000000>;
+			clocks = <&clks IMX7D_OSC_24M_CLK>, <&clks IMX7D_MAIN_AXI_ROOT_SRC>,
+				<&clks IMX7D_AHB_CHANNEL_ROOT_SRC>, <&clks IMX7D_PLL_SYS_PFD0_392M_CLK>,
+				<&clks IMX7D_DRAM_ROOT_SRC>, <&clks IMX7D_DRAM_ALT_ROOT_SRC>,
+				<&clks IMX7D_PLL_DRAM_MAIN_CLK>, <&clks IMX7D_DRAM_ALT_ROOT_CLK>,
+				<&clks IMX7D_PLL_SYS_PFD2_270M_CLK>, <&clks IMX7D_PLL_SYS_PFD1_332M_CLK>,
+				<&clks IMX7D_AHB_CHANNEL_ROOT_CLK>, <&clks IMX7D_MAIN_AXI_ROOT_DIV>;
+			clock-names = "osc", "axi_sel", "ahb_sel", "pfd0_392m", "dram_root", "dram_alt_sel",
+					"pll_dram", "dram_alt_root", "pfd2_270m", "pfd1_332m", "ahb", "axi";
+			interrupts = <0 112 0x04>, <0 113 0x04>;
+			interrupt-names = "irq_busfreq_0", "irq_busfreq_1";
+		};
+
+		caam_sm: caam-sm@00100000 {
+			 compatible = "fsl,imx7d-caam-sm", "fsl,imx6q-caam-sm";
+			 reg = <0x00100000 0x8000>;
+		};
+
+		irq_sec_vio: caam_secvio {
+			compatible = "fsl,imx7d-caam-secvio", "fsl,imx6q-caam-secvio";
+			interrupts = <GIC_SPI 20 IRQ_TYPE_LEVEL_HIGH>;
+			jtag-tamper = "disabled";
+			watchdog-tamper = "enabled";
+			internal-boot-tamper = "enabled";
+			external-pin-tamper = "disabled";
+		};
+
+		pmu {
+			compatible = "arm,cortex-a7-pmu";
+			interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_HIGH>;
+			status = "disabled";
+		};
+
+		ocrams_ddr: sram@00900000 {
+			compatible = "fsl,ddr-lpm-sram";
+			reg = <0x00900000 0x1000>;
+			clocks = <&clks IMX7D_OCRAM_CLK>;
+		};
+
+		ocram: sram@901000 {
+			compatible = "mmio-sram";
+			reg = <0x00901000 0x1f000>;
+			clocks = <&clks IMX7D_OCRAM_CLK>;
+		};
+
+		ocrams: sram@00180000 {
+			compatible = "fsl,lpm-sram";
+			reg = <0x00180000 0x8000>;
+			clocks = <&clks IMX7D_OCRAM_S_CLK>;
+			status = "disabled";
+		};
+
+		ocrams_mf: sram-mf@00900000 {
+			compatible = "fsl,mega-fast-sram";
+			reg = <0x00900000 0x20000>;
+			clocks = <&clks IMX7D_OCRAM_CLK>;
+		};
+
+		ocram_optee {
+			compatible = "fsl,optee-lpm-sram";
+			reg = <0x00180000 0x8000>;
+			overw_reg = <&ocrams_ddr 0x00904000 0x1000>,
+					<&ocram 0x00905000 0x1b000>,
+					<&ocrams 0x00900000 0x4000>;
+			overw_clock = <&ocrams &clks IMX7D_OCRAM_CLK>;
+		};
+	};
+};
+
+&aips1 {
+	ocotp: ocotp-ctrl@30350000 {
+		compatible = "fsl,imx7d-ocotp", "syscon";
+		reg = <0x30350000 0x10000>;
+		clocks = <&clks IMX7D_OCOTP_CLK>;
+		status = "okay";
+	};
+
+	tempmon: tempmon {
+		compatible = "fsl,imx7d-tempmon";
+		interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
+		fsl,tempmon =<&anatop>;
+		fsl,tempmon-data = <&ocotp>;
+		clocks = <&clks IMX7D_PLL_SYS_MAIN_CLK>;
+	};
+
+	caam_snvs: caam-snvs@30370000 {
+		compatible = "fsl,imx6q-caam-snvs";
+		reg = <0x30370000 0x10000>;
+	};
+	iomuxc_lpsr_gpr: lpsr-gpr@30270000 {
+		compatible = "fsl,imx7d-lpsr-gpr";
+		reg = <0x30270000 0x10000>;
+	};
+};
+
+&aips2 {
+	flextimer1: flextimer@30640000 {
+		compatible = "fsl,imx7d-flextimer";
+		reg = <0x30640000 0x10000>;
+		interrupts = <GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>;
+		status = "disabled";
+	};
+
+	flextimer2: flextimer@30650000 {
+		compatible = "fsl,imx7d-flextimer";
+		reg = <0x30650000 0x10000>;
+		interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>;
+		status = "disabled";
+	};
+
+	system_counter_rd: system-counter-rd@306a0000 {
+		compatible = "fsl,imx7d-system-counter-rd";
+		reg = <0x306a0000 0x10000>;
+		status = "disabled";
+	};
+
+	system_counter_cmp: system-counter-cmp@306b0000 {
+		compatible = "fsl,imx7d-system-counter-cmp";
+		reg = <0x306b0000 0x10000>;
+		status = "disabled";
+	};
+
+	system_counter_ctrl: system-counter-ctrl@306c0000 {
+		compatible = "fsl,imx7d-system-counter-ctrl";
+		reg = <0x306c0000 0x10000>;
+		interrupts = <GIC_SPI 47 IRQ_TYPE_LEVEL_HIGH>,
+			<GIC_SPI 48 IRQ_TYPE_LEVEL_HIGH>;
+		status = "disabled";
+	};
+
+	mipi_dsi: mipi-dsi@30760000 {
+		compatible = "fsl,imx7d-mipi-dsi";
+		reg = <0x30760000 0x10000>;
+		interrupts = <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
+		clocks = <&clks IMX7D_MIPI_DSI_ROOT_CLK>,
+			<&clks IMX7D_MIPI_DPHY_ROOT_CLK>;
+		clock-names = "mipi_cfg_clk", "mipi_pllref_clk";
+		mipi-phy-supply = <&reg_1p0d>;
+		status = "disabled";
+	};
+};
+
+&aips3 {
+	crypto: caam@30900000 {
+		compatible = "fsl,imx7d-caam", "fsl,sec-v4.0";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		reg = <0x30900000 0x40000>;
+		ranges = <0 0x30900000 0x40000>;
+		interrupts = <GIC_SPI 91 IRQ_TYPE_LEVEL_HIGH>;
+		clocks = <&clks IMX7D_CAAM_CLK>,
+			<&clks IMX7D_AHB_CHANNEL_ROOT_CLK>;
+		clock-names = "ipg", "aclk";
+
+		sec_ctrl: ctrl@0 {
+			/* CAAM Page 0 only accessible */
+			/*	by secure world */
+			compatible = "fsl,sec-v4.0-ctrl";
+			reg = <0x30900000 0x1000>;
+			secure-status = "okay";
+			status = "disabled";
+		};
+
+		sec_jr0: jr0@1000 {
+			 compatible = "fsl,sec-v4.0-job-ring";
+			 reg = <0x1000 0x1000>;
+			 interrupts = <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>;
+		};
+
+		sec_jr1: jr1@2000 {
+			 compatible = "fsl,sec-v4.0-job-ring";
+			 reg = <0x2000 0x1000>;
+			 interrupts = <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>;
+		};
+
+		sec_jr2: jr2@3000 {
+			 compatible = "fsl,sec-v4.0-job-ring";
+			 reg = <0x3000 0x1000>;
+			 interrupts = <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>;
+		};
+	};
+
+	rpmsg: rpmsg{
+		compatible = "fsl,imx7d-rpmsg";
+		status = "disabled";
+	};
+
+	weim: weim@30bc0000 {
+		compatible = "fsl,imx7d-weim", "fsl,imx6sx-weim", "fsl,imx6q-weim";
+		reg = <0x30bc0000 0x10000>;
+		interrupts = <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>;
+		clocks = <&clks IMX7D_EIM_ROOT_CLK>;
+		status = "disabled";
+	};
+
+};
