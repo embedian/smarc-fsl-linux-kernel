@@ -470,6 +470,21 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-sabresd-ldo.dtb \
 	imx6q-sabresd-enetirq.dtb \
 	imx6q-savageboard.dtb \
+        imx6dl-smarcfimx6.dtb \
+        imx6q-smarcfimx6.dtb \
+	imx6qp-smarcfimx6.dtb \
+        imx6dl-smarcfimx6-wvga.dtb \
+        imx6q-smarcfimx6-wvga.dtb \
+        imx6qp-smarcfimx6-wvga.dtb \
+        imx6dl-smarcfimx6-xga.dtb \
+        imx6q-smarcfimx6-xga.dtb \
+        imx6qp-smarcfimx6-xga.dtb \
+        imx6dl-smarcfimx6-wxga.dtb \
+        imx6q-smarcfimx6-wxga.dtb \
+        imx6qp-smarcfimx6-wxga.dtb \
+        imx6dl-smarcfimx6-1080p.dtb \
+        imx6q-smarcfimx6-1080p.dtb \
+        imx6qp-smarcfimx6-1080p.dtb \
 	imx6q-sbc6x.dtb \
 	imx6q-tbs2910.dtb \
 	imx6q-ts4900.dtb \
