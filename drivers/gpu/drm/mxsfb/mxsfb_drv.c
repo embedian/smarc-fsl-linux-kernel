@@ -50,7 +50,7 @@
 /* Maximum Video PLL frequency */
 #define MAX_PLL_FREQ 1200000000
 /* Mininum pixel clock in Hz */
-#define MIN_PIX_CLK  74250000
+#define MIN_PIX_CLK  31500000
 enum mxsfb_devtype {
 	MXSFB_V3,
 	MXSFB_V4,
