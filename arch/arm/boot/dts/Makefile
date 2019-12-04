@@ -393,7 +393,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
         imx6qp-smarcfimx6-wvga.dtb \
         imx6qp-smarcfimx6-xga.dtb \
         imx6qp-smarcfimx6-wxga.dtb \
-        imx6qp-smarcfimx6-1080p.dts \
+        imx6qp-smarcfimx6-1080p.dtb \
 	imx6q-apalis-ixora.dtb \
 	imx6q-apf6dev.dtb \
 	imx6q-arm2.dtb \
