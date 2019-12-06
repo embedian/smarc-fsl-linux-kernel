@@ -1107,6 +1107,8 @@
         can1: can@2 {
                 compatible = "microchip,mcp2515";
                 reg = <2>;
+               	interrupt-parent = <&gpio3>;
+               	interrupts = <18 IRQ_TYPE_EDGE_FALLING>;
                 spi-max-frequency = <12000000>;
                 clocks = <&can_osc>;
                 vdd-supply = <&reg_3p3v>;
@@ -1116,6 +1118,8 @@
         can2: can@3 {
                 compatible = "microchip,mcp2515";
                 reg = <3>;
+               	interrupt-parent = <&gpio3>;
+               	interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
                 spi-max-frequency = <12000000>;
                 clocks = <&can_osc>;
                 vdd-supply = <&reg_3p3v>;
