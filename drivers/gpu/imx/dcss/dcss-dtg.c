@@ -92,7 +92,7 @@
 /* Maximum Video PLL frequency */
 #define MAX_PLL_FREQ 1200000000
 /* Mininum pixel clock in kHz */
-#define MIN_PIX_CLK 74250
+#define MIN_PIX_CLK 31500
 
 static struct dcss_debug_reg dtg_debug_reg[] = {
 	DCSS_DBG_REG(DCSS_DTG_TC_CONTROL_STATUS),
