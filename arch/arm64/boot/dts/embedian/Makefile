@@ -7,6 +7,8 @@ dtb-$(CONFIG_ARCH_FSL_IMX8MQ) += fsl-smarcimx8mq.dtb \
 				 fsl-smarcimx8mq-edp.dtb \
                                  fsl-smarcimx8mq-hdmi.dtb
 
+dtb-$(CONFIG_ARCH_FSL_IMX8MM) += fsl-smarcimx8mm.dtb
+
 always          := $(dtb-y)
 subdir-y        := $(dts-dirs)
 clean-files     := *.dtb
