@@ -213,6 +213,18 @@
 			>;
 		};
 
+                pinctrl_usbotg1: usbotg1 {
+                        fsl,pins = <
+                                MX8MM_IOMUXC_GPIO1_IO10_USB1_OTG_ID	0x41
+                        >;
+                };
+
+                pinctrl_usbotg2: usbotg2 {
+                        fsl,pins = <
+                                MX8MM_IOMUXC_GPIO1_IO11_USB2_OTG_ID     0x41
+                        >;
+                };
+
 		pinctrl_i2c1: i2c1grp {
 			fsl,pins = <
 				MX8MM_IOMUXC_I2C1_SCL_I2C1_SCL		0x400001c3
@@ -523,21 +535,6 @@
 		csi1_ep: endpoint {
 			remote-endpoint = <&csi1_mipi_ep>;
 		};
-	};
-};
-
-&flexspi {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_flexspi0>;
-	status = "okay";
-
-	flash0: mx25u6473f@0 {
-		reg = <0>;
-		#address-cells = <1>;
-		#size-cells = <1>;
-		compatible = "macronix,mx25u6473f";
-		spi-max-frequency = <80000000>;
-		spi-nor,ddr-quad-read-dummy = <6>;
 	};
 };
 
@@ -1024,6 +1021,8 @@
 };
 
 &usbotg1 {
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_usbotg1>;
         vbus-supply = <&reg_usb_otg1_vbus>;
 	dr_mode = "otg";
 	picophy,pre-emp-curr-control = <3>;
@@ -1032,6 +1031,8 @@
 };
 
 &usbotg2 {
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_usbotg2>;
         vbus-supply = <&reg_usb_otg2_vbus>;
 	dr_mode = "host";
 	picophy,pre-emp-curr-control = <3>;
