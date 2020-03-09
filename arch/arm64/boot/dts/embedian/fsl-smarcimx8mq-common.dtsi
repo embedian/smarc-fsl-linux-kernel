@@ -897,7 +897,7 @@
 
 &usb_dwc3_0 {
 	status = "okay";
-	dr_mode = "host";
+	dr_mode = "peripheral";
 };
 
 &usb3_phy1 {
