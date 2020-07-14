@@ -332,9 +332,9 @@
 			fsl,pins = <
 				MX8MM_IOMUXC_SAI3_RXFS_SAI3_RX_SYNC     0xd6
 				MX8MM_IOMUXC_SAI3_RXC_SAI3_RX_BCLK      0xd6
-				MX8MM_IOMUXC_SAI2_MCLK_SAI2_MCLK        0xd6
+				/*MX8MM_IOMUXC_SAI2_MCLK_SAI2_MCLK        0xd6*/
 				MX8MM_IOMUXC_SAI3_TXD_SAI3_TX_DATA0     0xd6
-				MX8MM_IOMUXC_I2C4_SDA_GPIO5_IO21        0xd6
+				MX8MM_IOMUXC_SAI3_RXD_SAI3_RX_DATA0    	0xd6
 			>;
 		};
 
@@ -989,7 +989,7 @@
 &sai3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_sai3>;
-	assigned-clocks = <&clk IMX8MM_CLK_SAI3>;
+	assigned-clocks = <&clk IMX8MM_CLK_SAI2>;
 	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
 	assigned-clock-rates = <24576000>;
 	status = "okay";
