@@ -158,6 +158,12 @@ config DRM_TI_TFP410
 	---help---
 	  Texas Instruments TFP410 DVI/HDMI Transmitter driver
 
+config DRM_TI_SN65DSI84
+        tristate "SN65DSI84 DSI to LVDS bridge"
+        select REGMAP_I2C
+        ---help---
+          Support for the Texas Intruments SN65DSI84 bridge.
+
 config DRM_TI_SN65DSI86
 	tristate "TI SN65DSI86 DSI to eDP bridge"
 	depends on OF
