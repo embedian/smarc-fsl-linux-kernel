@@ -946,13 +946,7 @@
 
 &resmem {
         /* cma region is provided by kernel command line as cma=<size>M */
-        /delete-node/ linux,cma;
-
-        /delete-node/ rpmsg@b8000000;
-        rpmsg_reserved: rpmsg@0x40000000 {
-                no-map;
-                reg = <0 0x40000000 0 0x400000>;
-        };
+	/delete-node/ linux,cma;
 };
 
 &A53_0 {
