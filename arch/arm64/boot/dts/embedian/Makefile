@@ -5,4 +5,5 @@ dtb-$(CONFIG_ARCH_FSL_IMX8MQ) += fsl-smarcimx8mq.dtb \
 				 fsl-smarcimx8mq-dp.dtb \
 				 fsl-smarcimx8mq-edp.dtb \
                                  fsl-smarcimx8mq-hdmi.dtb \
-				 fsl-smarcimx8mm.dtb
+				 fsl-smarcimx8mm.dtb \
+				 fsl-smarcimx8mm-m4.dtb
