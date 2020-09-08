@@ -3746,6 +3746,7 @@ static const struct panel_desc_dsi auo_g070vw01 = {
                         .height = 91,
                 },
                 .bus_flags = DRM_BUS_FLAG_DE_LOW,
+		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 
         },
         .flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
@@ -3756,13 +3757,13 @@ static const struct panel_desc_dsi auo_g070vw01 = {
 static const struct drm_display_mode auo_g185xw01_mode = {
         .clock = 74250,
         .hdisplay = 1366,
-        .hsync_start = 1366 + 72,
-        .hsync_end = 1366 + 72 + 144,
-        .htotal = 1366 + 72 + 144 + 216,
+        .hsync_start = 1366 + 60,
+        .hsync_end = 1366 + 60 + 60,
+        .htotal = 1366 + 60 + 60 + 120,
         .vdisplay = 768,
-        .vsync_start = 768 + 1,
-        .vsync_end = 768 + 1 + 3,
-        .vtotal = 768 + 1 + 3 + 23,
+        .vsync_start = 768 + 10,
+        .vsync_end = 768 + 10 + 10,
+        .vtotal = 768 + 10 + 10 + 20,
         .vrefresh = 60,
         .flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
 };
@@ -3777,6 +3778,7 @@ static const struct panel_desc_dsi auo_g185xw01 = {
                         .height = 230,
                 },
                 .bus_flags = DRM_BUS_FLAG_DE_LOW,
+		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
         },
         .flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
         .format = MIPI_DSI_FMT_RGB888,
@@ -3784,11 +3786,11 @@ static const struct panel_desc_dsi auo_g185xw01 = {
 };
 
 static const struct drm_display_mode auo_g240hw01_mode = {
-       	.clock = 148500,
+       	.clock = 162000,
         .hdisplay = 1920,
        	.hsync_start = 1920 + 88,
         .hsync_end = 1920 + 88 + 44,
-       	.htotal = 1920 + 88 + 44 + 148,
+       	.htotal = 1920 + 88 + 44 + 88,
         .vdisplay = 1080,
         .vsync_start = 1080 + 4,
         .vsync_end = 1080 + 4 + 5,
@@ -3807,6 +3809,7 @@ static const struct panel_desc_dsi auo_g240hw01 = {
                         .height = 299,
                 },
                 .bus_flags = DRM_BUS_FLAG_DE_LOW,
+		.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
         },
         .flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
         .format = MIPI_DSI_FMT_RGB888,
