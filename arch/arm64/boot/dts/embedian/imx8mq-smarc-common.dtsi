@@ -524,6 +524,11 @@
         pinctrl-0 = <&pinctrl_i2c3>;
         status = "okay";
 
+	baseboard_eeprom: baseboard_eeprom@50 {
+		compatible = "at,24c256";
+		reg = <0x50>;
+	};
+
 };
 
 &i2c4 {

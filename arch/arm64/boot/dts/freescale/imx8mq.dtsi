@@ -668,17 +668,10 @@
 					 * power down PCIE2, PCIE1
 					 * will be held in reset too.
 					 *
-					 * So instead of creating two
-					 * separate power domains for
-					 * PCIE1 and PCIE2 we create a
-					 * link between both and use
-					 * it as a shared PCIE power
-					 * domain.
 					 */
 					pgc_pcie: power-domain@1 {
 						#power-domain-cells = <0>;
 						reg = <IMX8M_POWER_DOMAIN_PCIE1>;
-						power-domains = <&pgc_pcie2>;
 					};
 
 					pgc_otg1: power-domain@2 {
@@ -1458,7 +1451,7 @@
 					<0 0 0 3 &gic GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
 					<0 0 0 4 &gic GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
 			fsl,max-link-speed = <2>;
-			power-domains = <&pgc_pcie>;
+			power-domains = <&pgc_pcie2>;
 			resets = <&src IMX8MQ_RESET_PCIEPHY2>,
 			         <&src IMX8MQ_RESET_PCIE2_CTRL_APPS_EN>,
 			         <&src IMX8MQ_RESET_PCIE2_CTRL_APPS_TURNOFF>;
