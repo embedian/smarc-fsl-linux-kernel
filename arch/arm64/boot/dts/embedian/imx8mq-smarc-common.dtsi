@@ -89,6 +89,13 @@
                 regulator-always-on;
         };
 
+        epdev_on: epdev_on {
+                compatible = "regulator-fixed";
+                regulator-name = "epdev";
+                regulator-min-microvolt = <3300000>;
+                regulator-max-microvolt = <3300000>;
+        };
+
         reg_5p0v: 5p0v {
                 compatible = "regulator-fixed";
                 regulator-name = "5P0V";
@@ -131,7 +138,6 @@
                         sound-dai = <&codec>;
                         frame-master;
                         bitclock-master;
-                        clocks = <&clk IMX8MQ_CLK_SAI2_ROOT>;
                 };
         };
 
@@ -564,28 +570,28 @@
 &pcie0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcie0>;
+	epdev_on-supply = <&epdev_on>;
 	reset-gpio = <&gpio3 3 GPIO_ACTIVE_LOW>;
 	clocks = <&clk IMX8MQ_CLK_PCIE1_ROOT>,
 		 <&clk IMX8MQ_CLK_PCIE1_AUX>,
 		 <&clk IMX8MQ_CLK_PCIE1_PHY>,
 		 <&pcie0_refclk>;
 	clock-names = "pcie", "pcie_aux", "pcie_phy", "pcie_bus";
-       	ext_osc = <1>;
-	status = "okay";
+	status = "disabled";
 };
 
 &pcie1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcie1>;
+        epdev_on-supply = <&epdev_on>;
 	reset-gpio = <&gpio3 4 GPIO_ACTIVE_LOW>;
 	clocks = <&clk IMX8MQ_CLK_PCIE2_ROOT>,
 		 <&clk IMX8MQ_CLK_PCIE2_AUX>,
 		 <&clk IMX8MQ_CLK_PCIE2_PHY>,
 		 <&pcie1_refclk>;
 	clock-names = "pcie", "pcie_aux", "pcie_phy", "pcie_bus";
-	reserved-region = <&rpmsg_reserved>;
-       	ext_osc = <1>;
-	status = "okay";
+        reserved-region = <&rpmsg_reserved>;
+	status = "disabled";
 };
 
 &pgc_gpu {
@@ -657,7 +663,6 @@
 &usb_dwc3_0 {
 	dr_mode = "host";
 	status = "okay";
-
 };
 
 &usb3_phy1 {
