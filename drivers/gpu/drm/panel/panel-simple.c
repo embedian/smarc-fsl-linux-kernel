@@ -2433,6 +2433,42 @@ static const struct panel_desc jdi_tx26d202vm0bwa = {
 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
 };
 
+static const struct display_timing auo_g070vw01_timing = {
+        .pixelclock = { 27000000, 33300000, 39400000 },
+        .hactive = { 800, 800, 800 },
+        .hfront_porch = { 30, 64, 110 },
+        .hback_porch = { 30, 64, 110 },
+        .hsync_len = { 60, 128, 220 },
+        .vactive = { 480, 480, 480},
+        .vfront_porch = { 2, 7, 12 },
+        .vback_porch = { 2, 7, 12 },
+        .vsync_len = { 4, 14, 26 },
+        .flags = DISPLAY_FLAGS_DE_HIGH,
+};
+
+static const struct panel_desc auo_g070vw01 = {
+        .timings = &auo_g070vw01_timing,
+        .num_timings = 1,
+        .bpc = 8,
+        .size = {
+                .width = 152,
+                .height = 91,
+        },
+        .delay = {
+                /*
+                 * The panel spec recommends one second delay
+                 * to the below items.  However, it's a bit too
+                 * long in pratice.  Based on tests, it turns
+                 * out 100 milliseconds is fine.
+                */
+                .prepare = 100,
+                .enable = 100,
+                .unprepare = 100,
+                .disable = 100,
+        },
+        .bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+};
+
 static const struct display_timing koe_tx14d24vm1bpa_timing = {
 	.pixelclock = { 5580000, 5850000, 6200000 },
 	.hactive = { 320, 320, 320 },
@@ -4149,6 +4185,9 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "jdi,tx26d202vm0bwa",
 		.data = &jdi_tx26d202vm0bwa,
 	}, {
+                .compatible = "auo,g070vw01",
+                .data = &auo_g070vw01,
+        }, {
 		.compatible = "koe,tx14d24vm1bpa",
 		.data = &koe_tx14d24vm1bpa,
 	}, {
