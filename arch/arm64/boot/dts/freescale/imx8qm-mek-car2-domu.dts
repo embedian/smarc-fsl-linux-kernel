@@ -1,0 +1,99 @@
+/*
+ * Copyright 2020 NXP
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include "imx8qm-mek-domu.dts"
+
+/ {
+	trusty {
+		compatible = "android,trusty-smc-v1";
+		ranges;
+		#address-cells = <2>;
+		#size-cells = <2>;
+		trusty-irq {
+			compatible = "android,trusty-irq-v1";
+			interrupt-templates = <&trusty_ipi 0>;
+			interrupt-ranges = < 0 15 0>;
+		};
+		trusty-virtio {
+			compatible = "android,trusty-virtio-v1";
+		};
+		trusty-log {
+			compatible = "android,trusty-log-v1";
+		};
+	};
+	trusty_ipi: interrupt-controller@0 {
+		compatible = "android,CustomIPI";
+		interrupt-controller;
+		#interrupt-cells = <1>;
+	};
+
+	firmware {
+		android {
+			compatible = "android,firmware";
+			fstab {
+				compatible = "android,fstab";
+				vendor {
+					compatible = "android,vendor";
+					/* default emmc node used for GSI */
+					dev = "/dev/block/platform/passthrough/passthrough:bus@5b000000/5b010000.mmc/by-name/vendor";
+					/* sd card node which used if androidboot.boot_device_root=mmcblk1 */
+					dev_mmcblk1 = "/dev/block/platform/passthrough/passthrough:bus@5b000000/5b020000.mmc/by-name/vendor";
+					/* emmc node which used if androidboot.boot_device_root=mmcblk0 */
+					dev_mmcblk0 = "/dev/block/platform/passthrough/passthrough:bus@5b000000/5b010000.mmc/by-name/vendor";
+					type = "ext4";
+					mnt_flags = "ro,barrier=1,inode_readahead_blks=8";
+					fsmgr_flags = "wait,slotselect,avb";
+				};
+				system_ext {
+					compatible = "android,system_ext";
+					/* default emmc node used for GSI */
+					dev = "/dev/block/platform/passthrough/passthrough:bus@5b000000/5b010000.mmc/by-name/system_ext";
+					/* sd card node which used if androidboot.boot_device_root=mmcblk1 */
+					dev_mmcblk1 = "/dev/block/platform/passthrough/passthrough:bus@5b000000/5b020000.mmc/by-name/system_ext";
+					/* emmc node which used if androidboot.boot_device_root=mmcblk0 */
+					dev_mmcblk0 = "/dev/block/platform/passthrough/passthrough:bus@5b000000/5b010000.mmc/by-name/system_ext";
+					type = "ext4";
+					mnt_flags = "noatime,ro,errors=panic";
+					fsmgr_flags = "wait,slotselect,avb";
+				};
+				product {
+					compatible = "android,product";
+					/* default emmc node used for GSI */
+					dev = "/dev/block/platform/passthrough/passthrough:bus@5b000000/5b010000.mmc/by-name/product";
+					/* sd card node which used if androidboot.boot_device_root=mmcblk1 */
+					dev_mmcblk1 = "/dev/block/platform/passthrough/passthrough:bus@5b000000/5b020000.mmc/by-name/product";
+					/* emmc node which used if androidboot.boot_device_root=mmcblk0 */
+					dev_mmcblk0 = "/dev/block/platform/passthrough/passthrough:bus@5b000000/5b010000.mmc/by-name/product";
+					type = "ext4";
+					mnt_flags = "ro,barrier=1,inode_readahead_blks=8";
+					fsmgr_flags = "wait,slotselect,avb";
+				};
+			};
+			vbmeta {
+				/*we need use FirstStageMountVBootV2 if we enable avb*/
+				compatible = "android,vbmeta";
+				/*parts means the partition witch can be mount in first stage*/
+				parts = "vbmeta,dtbo,boot,system,vendor,product";
+			};
+		};
+	};
+
+	/*
+	 * vehicle core driver device node which open power domain dc by default
+	 */
+	vehicle_core: vehicle_core {
+		compatible = "nxp,imx-vehicle";
+		status = "okay";
+	};
+};

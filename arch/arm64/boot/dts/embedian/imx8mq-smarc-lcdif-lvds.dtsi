@@ -1,0 +1,121 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/*
+ * Copyright 2017 NXP
+ * Copyright 2020 Embedian, Inc.
+ * Copyright (C) 2017-2018 Pengutronix, Lucas Stach <kernel@pengutronix.de>
+ */
+
+/ {
+        sound-hdmi {
+                status = "disabled";
+        };
+};
+
+&irqsteer {
+        status = "disabled";
+};
+
+&dcss {
+        status = "disabled";
+};
+
+&hdmi {
+        status = "disabled";
+};
+
+&dsi_lvds_bridge {
+        status = "okay";
+};
+
+
+&lcdif {
+        status = "okay";
+        max-memory-bandwidth = <497829888>; /* 1920x1080-32@60.02 */
+
+        assigned-clocks = <&clk IMX8MQ_CLK_LCDIF_PIXEL>,
+                          <&clk IMX8MQ_VIDEO_PLL1_BYPASS>,
+                          <&clk IMX8MQ_VIDEO_PLL1_REF_SEL>,
+                          <&clk IMX8MQ_VIDEO_PLL1>;
+        assigned-clock-parents = <&clk IMX8MQ_VIDEO_PLL1_OUT>,
+                                 <&clk IMX8MQ_VIDEO_PLL1>,
+                                 <&clk IMX8MQ_CLK_27M>;
+        assigned-clock-rate = <126000000>, <0>, <0>, <1134000000>;
+
+        port@0 {
+                lcdif_to_dsi: endpoint {
+                        remote-endpoint = <&dsi_from_lcdif>;
+                };
+        };
+};
+
+&mipi_dsi {
+        status = "okay";
+	fsl,clock-drop-level = <2>;
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+        panel@0 {
+		reg = <0>;
+                status = "okay";
+                /* AUO G070VW01 800x480 LVDS Display */
+               	compatible = "auo,g070vw01";
+                /* AUO G185XW01 1366x768 LVDS Display */
+               	/*compatible = "auo,g185xw01";*/
+                /* AUO G240HW01 1920x1080 LVDS Display */
+                /*compatible = "auo,g240hw01";*/
+                backlight = <&backlight>;
+                enable-gpios = <&gpio4 1 0>;    /* Enable LCD_VDD_EN pin */
+                dsi-lanes = <4>;
+                /* AUO G070VW01 800x480 LVDS Display */
+              	panel-width-mm  = <152>;
+                panel-height-mm = <91>;
+                /* AUO G185XW01 1366x768 LVDS Display */
+               	/*panel-width-mm  = <410>;
+                panel-height-mm = <230>;*/
+                /* AUO G240HW01 1920x1080 LVDS Display */
+               	/*panel-width-mm  = <531>;
+                panel-height-mm = <299>;*/
+
+                delay,prepare = <120>;
+
+		port {
+			dsi_lvds_bridge_in: endpoint {
+				remote-endpoint = <&mipi_dsi_out>;
+			};
+		};
+        };
+
+        ports {
+                #address-cells = <1>;
+                #size-cells = <0>;
+
+                port@0 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+                        reg = <0>;
+                        dsi_from_lcdif: endpoint@0 {
+				reg = <0>;
+                        	remote-endpoint = <&lcdif_to_dsi>;
+                        };
+                };
+
+        	port@1 {
+                        reg = <1>;
+                	mipi_dsi_out: endpoint {
+				remote-endpoint = <&dsi_lvds_bridge_in>;
+                	};
+		};
+	};
+};
+
+&pwm1 {
+        status = "okay";
+};
+
+&backlight {
+        status = "okay";
+};
+
+&dphy {
+        status = "okay";
+};
