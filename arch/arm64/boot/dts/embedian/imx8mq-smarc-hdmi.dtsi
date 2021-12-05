@@ -46,7 +46,7 @@
 
 	hdmi_on_hog {
 		gpio-hog;
-		gpios = <1 0>;
+		gpios = <1 1>;
 		output-low;
 		line-name = "hdmi_on";
 	};
