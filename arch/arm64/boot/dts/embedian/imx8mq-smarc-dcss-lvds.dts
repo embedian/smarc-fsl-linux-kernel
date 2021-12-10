@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/*
+ * Copyright 2017 NXP
+ * Copyright 2020 Embedian, Inc.
+ * Copyright (C) 2017-2018 Pengutronix, Lucas Stach <kernel@pengutronix.de>
+ */
+
+#include "imx8mq-smarc-common.dtsi"
+#include "imx8mq-smarc-dcss-lvds.dtsi"
+
+/ {
+        model = "Embedian SMARC-iMX8M Computer on Module DCSS+LVDS";
+};
