@@ -1,0 +1,14 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2021 Embedian, Inc.
+ * Copyright 2019 NXP
+ */
+/*
+ * SMARC-iMX8MP without any displays
+ */
+
+#include "imx8mp-smarc-common.dtsi"
+
+/ {
+	model = "Embedian i.MX8MPlus SMARC-iMX8MP CPU Module";
+};
