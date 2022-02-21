@@ -1207,13 +1207,13 @@
 
 	pinctrl_can1: can1grp {
 		fsl,pins = <
-			MX8MQ_IOMUXC_NAND_WP_B_GPIO3_IO18		0x16	/*CAN0_INT#*/
+			MX8MQ_IOMUXC_NAND_WP_B_GPIO3_IO18		0x41	/*CAN0_INT#*/
 		>;
 	};
 
 	pinctrl_can2: can2grp {
 		fsl,pins = <
-			MX8MQ_IOMUXC_NAND_READY_B_GPIO3_IO16		0x16	/*CAN1_INT#*/
+			MX8MQ_IOMUXC_NAND_READY_B_GPIO3_IO16		0x41	/*CAN1_INT#*/
 		>;
 	};
 
