@@ -142,7 +142,7 @@
 		pinctrl-0 = <&pinctrl_buck2>;
 		compatible = "regulator-gpio";
 		regulator-name = "vdd_arm";
-		regulator-min-microvolt = <900000>;
+		regulator-min-microvolt = <1000000>;
 		regulator-max-microvolt = <1000000>;
 		gpios = <&gpio1 13 GPIO_ACTIVE_HIGH>;
 		states = <1000000 0x0
