@@ -86,7 +86,7 @@
 			compatible = "regulator-gpio";
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_dvfs>;
-			regulator-min-microvolt = <900000>;
+			regulator-min-microvolt = <1000000>;
 			regulator-max-microvolt = <1000000>;
 			regulator-name = "gpio_dvfs";
 			regulator-type = "voltage";
