@@ -152,7 +152,7 @@
                         compatible = "regulator-gpio";
                         pinctrl-names = "default";
                         pinctrl-0 = <&pinctrl_dvfs>;
-                        regulator-min-microvolt = <1000000>;
+                        regulator-min-microvolt = <900000>;
                         regulator-max-microvolt = <1000000>;
                         regulator-name = "gpio_dvfs";
                         regulator-type = "voltage";
@@ -1046,7 +1046,6 @@
 		1000000 900000
 		800000  900000
 	>;
-	dc-supply = <&reg_gpio_dvfs>;
 };
 
 &csi1_bridge {
