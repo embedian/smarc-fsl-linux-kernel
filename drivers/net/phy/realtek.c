@@ -242,6 +242,11 @@ static int rtl8211f_config_init(struct phy_device *phydev)
 		return 0;
 	}
 
+	/* Set green LED for Link, yellow LED for Active */
+	phy_write(phydev, RTL821x_PAGE_SELECT, 0xd04);
+	phy_write(phydev, 0x10, 0x617f);
+	phy_write(phydev, RTL821x_PAGE_SELECT, 0x0);
+
 	ret = phy_modify_paged_changed(phydev, 0xd08, 0x11, RTL8211F_TX_DELAY,
 				       val_txdly);
 	if (ret < 0) {
