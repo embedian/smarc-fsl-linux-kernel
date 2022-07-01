@@ -171,6 +171,11 @@ static int rtl8211f_config_init(struct phy_device *phydev)
 	if (ret < 0)
 		return ret;
 
+	/* Set green LED for Link, yellow LED for Active */
+	phy_write(phydev, RTL821x_PAGE_SELECT, 0xd04);
+	phy_write(phydev, 0x10, 0x617f);
+	phy_write(phydev, RTL821x_PAGE_SELECT, 0x0);
+
 	/* enable TX-delay for rgmii-id and rgmii-txid, otherwise disable it */
 	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
 	    phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID)
