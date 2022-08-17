@@ -2469,6 +2469,42 @@ static const struct panel_desc auo_g070vw01 = {
         .bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
 };
 
+static const struct display_timing evervision_vgg644804_timing = {
+        .pixelclock = { 21500000, 25200000, 31500000 },
+        .hactive = { 640, 640, 640 },
+        .hfront_porch = { 33, 33, 33 },
+        .hback_porch = { 97, 97, 102 },
+        .hsync_len = { 5, 30, 45 },
+        .vactive = { 480, 480, 480},
+        .vfront_porch = { 10, 10, 7 },
+        .vback_porch = { 32, 32, 8 },
+        .vsync_len = { 1, 3, 5 },
+	.flags = DISPLAY_FLAGS_DE_HIGH,
+};
+
+static const struct panel_desc evervision_vgg644804 = {
+        .timings = &evervision_vgg644804_timing,
+        .num_timings = 1,
+        .bpc = 8,
+        .size = {
+                .width = 115,
+                .height = 86,
+        },
+        .delay = {
+                /*
+                 * The panel spec recommends one second delay
+                 * to the below items.  However, it's a bit too
+                 * long in pratice.  Based on tests, it turns
+                 * out 100 milliseconds is fine.
+                */
+                .prepare = 100,
+                .enable = 100,
+                .unprepare = 100,
+                .disable = 100,
+        },
+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA,
+};
+
 static const struct display_timing koe_tx14d24vm1bpa_timing = {
 	.pixelclock = { 5580000, 5850000, 6200000 },
 	.hactive = { 320, 320, 320 },
@@ -4188,6 +4224,9 @@ static const struct of_device_id platform_of_match[] = {
                 .compatible = "auo,g070vw01",
                 .data = &auo_g070vw01,
         }, {
+		.compatible = "evervision,vgg644804",
+		.data = &evervision_vgg644804,
+	}, {
 		.compatible = "koe,tx14d24vm1bpa",
 		.data = &koe_tx14d24vm1bpa,
 	}, {

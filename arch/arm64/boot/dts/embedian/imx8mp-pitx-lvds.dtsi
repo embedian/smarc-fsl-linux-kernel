@@ -46,6 +46,7 @@
 
 	panel {
 		compatible = "auo,g070vw01";
+		/*compatible = "evervision,vgg644804";*/
 		backlight = <&lvds0_backlight>;
 		enable-gpios = <&gpio4 1 0>;    /* Enable LCD0_VDD_EN pin */
 		status = "okay";
@@ -63,6 +64,7 @@
 
         lvds-channel@0 {
 		fsl,data-mapping = "spwg";
+		/*fsl,data-mapping = "jeida";*/
                 fsl,data-width = <24>;
                 status = "okay";
 
