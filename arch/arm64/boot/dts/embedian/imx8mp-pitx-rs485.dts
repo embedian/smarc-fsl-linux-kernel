@@ -1,0 +1,22 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2021 Embedian, Inc.
+ */
+
+#include "imx8mp-pitx-common.dtsi"
+
+/ {
+        model = "Embedian i.MX8MPlus pITX-iMX8M-PLUS SBC HDMI and RS485";
+};
+
+&uart2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart2>;
+	assigned-clocks = <&clk IMX8MP_CLK_UART2>;
+	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_80M>;
+	/delete-property/ fsl,uart-has-rtscts;
+	linux,rs485-enabled-at-boot-time;
+	rs485-rx-during-tx;
+	rts-gpios = <&gpio2 7 GPIO_ACTIVE_HIGH>;
+	status = "okay";
+};

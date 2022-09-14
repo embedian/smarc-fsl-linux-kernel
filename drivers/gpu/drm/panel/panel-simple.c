@@ -2454,6 +2454,7 @@ static const struct panel_desc auo_g070vw01 = {
                 .width = 152,
                 .height = 91,
         },
+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
         .delay = {
                 /*
                  * The panel spec recommends one second delay
