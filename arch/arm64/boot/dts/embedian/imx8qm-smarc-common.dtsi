@@ -150,32 +150,24 @@
 		regulator-always-on;
 	};
 
+	osc24m_clk: osc24m_clk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <24000000>;
+	};
+
 	sound-sgtl5000 {
 		compatible = "simple-audio-card";
-		simple-audio-card,name = "sgtl5000-audio";
+		simple-audio-card,name = "audio-sgtl5000";
 		simple-audio-card,format = "i2s";
-		simple-audio-card,widgets =
-			"Microphone", "Microphone Jack",
-			"Headphone", "Headphone Jack",
-			"Speaker", "Speaker Ext",
-			"Line", "Line In Jack";
-		simple-audio-card,routing =
-			"MIC_IN", "Microphone Jack",
-			"Microphone Jack", "Mic Bias",
-			"LINE_IN", "Line In Jack",
-			"Headphone Jack", "HP_OUT",
-			"Speaker Ext", "LINE_OUT";
-
+		simple-audio-card,bitclock-master = <&dailink_master>;
+		simple-audio-card,frame-master = <&dailink_master>;
 		simple-audio-card,cpu {
 			sound-dai = <&sai1>;
-			frame-master;
-			bitclock-master;
 		};
 
-		simple-audio-card,codec {
+		dailink_master: simple-audio-card,codec {
 			sound-dai = <&codec>;
-			frame-master;
-			bitclock-master;
 		};
 	};
 
@@ -539,12 +531,6 @@
         };
 };
 
-&emvsim0 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_sim0>;
-	status = "okay";
-};
-
 &lpuart0 { /* SER0 */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lpuart0>;
@@ -889,7 +875,7 @@
 		reg = <1>;
 		mipi_csi1_ep: endpoint {
 			remote-endpoint = <&ov5645_mipi_1_ep>;
-			data-lanes = <1 2 3 4>;
+			data-lanes = <1 2>;
 			bus-type = <4>;
 		};
 	};
@@ -914,11 +900,9 @@
 	ov5645_mipi0: ov5645_mipi@3c {	/* Support Coral G840-00180-01 Camera Module */
 		compatible = "ovti,ov5645";
 		reg = <0x3c>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_mipi_csi0>;
-		clocks = <&clk_dummy>;
-		clock-names = "xclk";
+		clocks = <&osc24m_clk>;
 		clock-frequency = <24000000>;
+		clock-names = "xclk";
 		csi_id = <0>;
 		vdddo-supply = <&reg_1p8v>;
 		vdda-supply = <&reg_2p8v>;
@@ -950,9 +934,7 @@
 	ov5645_mipi1: ov5645_mipi@3c {
 		compatible = "ovti,ov5645";
 		reg = <0x3c>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_mipi_csi1>;
-		clocks = <&clk_dummy>;
+		clocks = <&osc24m_clk>;
 		clock-names = "xclk";
 		clock-frequency = <24000000>;
 		csi_id = <1>;
@@ -968,7 +950,7 @@
 		port {
 			ov5645_mipi_1_ep: endpoint {
 				remote-endpoint = <&mipi_csi1_ep>;
-				data-lanes = <1 2 3 4>;
+				data-lanes = <1 2>;
 				clocks-lanes = <0>;
 			};
 		};
@@ -1465,17 +1447,19 @@
 
 	pinctrl_mipi0_lpi2c0: mipi0_lpi2c0grp {
 		fsl,pins = <
-			IMX8QM_MIPI_DSI0_I2C0_SCL_MIPI_DSI0_I2C0_SCL      0xc6000020
-			IMX8QM_MIPI_DSI0_I2C0_SDA_MIPI_DSI0_I2C0_SDA      0xc6000020
-			IMX8QM_MIPI_DSI0_GPIO0_01_LSIO_GPIO1_IO19         0x00000020
+			IMX8QM_MIPI_DSI0_I2C0_SCL_MIPI_DSI0_I2C0_SCL	0xc6000020
+			IMX8QM_MIPI_DSI0_I2C0_SDA_MIPI_DSI0_I2C0_SDA	0xc6000020
+			IMX8QM_MIPI_DSI0_GPIO0_01_LSIO_GPIO1_IO19	0x00000040	/* eDP0 IRQ */
+			IMX8QM_MIPI_DSI0_GPIO0_00_LSIO_GPIO1_IO18	0x00000020	/* eDP0 Enable */
 		>;
 	};
 
 	pinctrl_mipi1_lpi2c0: mipi1_lpi2c0grp {
 		fsl,pins = <
-			IMX8QM_MIPI_DSI1_I2C0_SCL_MIPI_DSI1_I2C0_SCL      0xc6000020
-			IMX8QM_MIPI_DSI1_I2C0_SDA_MIPI_DSI1_I2C0_SDA      0xc6000020
-			IMX8QM_MIPI_DSI1_GPIO0_01_LSIO_GPIO1_IO23         0x00000020
+			IMX8QM_MIPI_DSI1_I2C0_SCL_MIPI_DSI1_I2C0_SCL	0xc6000020
+			IMX8QM_MIPI_DSI1_I2C0_SDA_MIPI_DSI1_I2C0_SDA	0xc6000020
+			IMX8QM_MIPI_DSI1_GPIO0_01_LSIO_GPIO1_IO23	0x00000020	/* eDP1 IRQ */
+			IMX8QM_MIPI_DSI1_GPIO0_00_LSIO_GPIO1_IO22	0x00000020	/* eDP1 Enable */
 		>;
 	};
 

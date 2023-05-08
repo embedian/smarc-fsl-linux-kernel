@@ -1,0 +1,14 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2023 Embedian, Inc.
+ * Copyright 2019 NXP
+ */
+/*
+ * pITX-MX8M-PLUS without any displays
+ */
+
+#include "imx8mp-pitx-common.dtsi"
+
+/ {
+	model = "Embedian pITX-MX8M-PLUS SBC";
+};

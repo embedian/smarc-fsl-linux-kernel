@@ -79,14 +79,6 @@
 		regulator-always-on;
 	};
 
-	reg_lcd_3v3: regulator-lcd-3v3 {
-		compatible = "regulator-fixed";
-		regulator-name = "lcd-3v3";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		gpio = <&gpio3 4 GPIO_ACTIVE_LOW>;	/* Enable LCD_VDD_EN pin */
-	};
-
 	backlight: backlight {
 		compatible = "pwm-backlight";
 		enable-gpios = <&gpio6 17 GPIO_ACTIVE_HIGH>;	/* Backlight Enable Pin*/
@@ -101,7 +93,7 @@
 		status = "okay";
 	};
 
-        sound {
+        /*sound {
 		compatible = "fsl,imx-audio-sgtl5000";
 		model = "audio-sgtl5000";
 		audio-cpu = <&sai1>;
@@ -111,6 +103,21 @@
 			"MIC_IN", "Mic Jack",
 			"Mic Jack", "Mic Bias",
 			"Headphone Jack", "HP_OUT";
+	};*/
+
+        sound {
+                compatible = "simple-audio-card";
+                simple-audio-card,name = "audio-sgtl5000";
+                simple-audio-card,format = "i2s";
+                simple-audio-card,bitclock-master = <&dailink_master>;
+                simple-audio-card,frame-master = <&dailink_master>;
+                simple-audio-card,cpu {
+                        sound-dai = <&sai1>;
+                };
+
+                dailink_master: simple-audio-card,codec {
+                        sound-dai = <&codec>;
+		};
 	};
 };
 
@@ -407,6 +414,7 @@
 	};
 
 	codec: sgtl5000@a {
+		#sound-dai-cells = <0>;
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
 		clocks = <&clks IMX7D_AUDIO_MCLK_ROOT_DIV>;
@@ -464,19 +472,19 @@
 &lcdif {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lcdif>;
-	lcd-supply = <&reg_lcd_3v3>;
+	enable-gpios = <&gpio3 4 0>;	/* Enable LCD_VDD_EN pin */
 	display = <&display0>;
 	status = "okay";
 
 	display0: display@0 {
-		bits-per-pixel = <32>;
+		bits-per-pixel = <16>;
 		bus-width = <24>;
 
 		display-timings {
 			native-mode = <&timing0>;
 			/*timing0: g070vw01 {*/
 			timing0: timing0 {
-			clock-frequency = <33300000>;
+			clock-frequency = <33000000>;
 			hactive = <800>;
 			vactive = <480>;
 			hfront-porch = <64>;
@@ -872,13 +880,11 @@
 				MX7D_PAD_LCD_ENABLE__LCD_ENABLE		0x79
 				MX7D_PAD_LCD_VSYNC__LCD_VSYNC		0x79
 				MX7D_PAD_LCD_HSYNC__LCD_HSYNC		0x79
-				MX7D_PAD_LCD_RESET__LCD_RESET		0x79
 			>;
 		};
 
 		pinctrl_sai1: sai1grp {
 			fsl,pins = <
-				MX7D_PAD_SAI1_MCLK__SAI1_MCLK           0x1f
 				MX7D_PAD_SAI1_TX_BCLK__SAI1_TX_BCLK     0x1f
 				MX7D_PAD_SAI1_TX_SYNC__SAI1_TX_SYNC	0x1f
 				MX7D_PAD_SAI1_TX_DATA__SAI1_TX_DATA0	0x30
