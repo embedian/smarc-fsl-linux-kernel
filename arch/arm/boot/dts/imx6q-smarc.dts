@@ -10,7 +10,7 @@
 #include "imx6qdl-smarc.dtsi"
 
 / {
-	model = "Embedian i.MX6 Dual and Quad SMARC-FiMX6 CPU Board";
+	model = "Embedian i.MX6 Quad/Dual SMARC-FiMX6 CPU Board";
 	compatible = "fsl,imx6q-smarc", "fsl,imx6q";
 };
 

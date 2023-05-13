@@ -630,6 +630,11 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-smarc-wxga.dtb \
 	imx6q-smarc-xga.dtb \
 	imx6q-smarc-1080p.dtb \
+	imx6qp-smarc.dtb \
+	imx6qp-smarc-wvga.dtb \
+	imx6qp-smarc-wxga.dtb \
+	imx6qp-smarc-xga.dtb \
+	imx6qp-smarc-1080p.dtb \
 	imx6q-solidsense.dtb \
 	imx6q-tbs2910.dtb \
 	imx6q-ts4900.dtb \
