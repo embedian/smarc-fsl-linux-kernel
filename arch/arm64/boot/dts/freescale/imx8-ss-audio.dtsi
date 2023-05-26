@@ -192,6 +192,7 @@ audio_subsys: bus@59000000 {
 	};
 
 	sai1: sai@59050000 {
+		#sound-dai-cells = <0>;
 		compatible = "fsl,imx8qm-sai";
 		reg = <0x59050000 0x10000>;
 		interrupts = <GIC_SPI 316 IRQ_TYPE_LEVEL_HIGH>;

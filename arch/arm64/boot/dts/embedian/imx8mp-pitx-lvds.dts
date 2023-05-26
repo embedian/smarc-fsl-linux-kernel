@@ -1,0 +1,11 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2023 Embedian, Inc.
+ */
+
+#include "imx8mp-pitx-common.dtsi"
+#include "imx8mp-pitx-lvds.dtsi"
+
+/ {
+        model = "Embedian pITX-iMX8M-PLUS SBC LVDS";
+};

@@ -1,0 +1,108 @@
+/*
+ * Copyright 2023 EMBEDIAN, INC.
+ */
+
+/ {
+	backlight_lvds0: backlight_lvds@0 {
+		compatible = "pwm-backlight";
+		pwms = <&pwm_lvds0 0 100000 0>;
+		brightness-levels = < 0  1  2  3  4  5  6  7  8  9
+				     10 11 12 13 14 15 16 17 18 19
+				     20 21 22 23 24 25 26 27 28 29
+				     30 31 32 33 34 35 36 37 38 39
+				     40 41 42 43 44 45 46 47 48 49
+				     50 51 52 53 54 55 56 57 58 59
+				     60 61 62 63 64 65 66 67 68 69
+				     70 71 72 73 74 75 76 77 78 79
+				     80 81 82 83 84 85 86 87 88 89
+				     90 91 92 93 94 95 96 97 98 99
+				    100>;
+		default-brightness-level = <80>;
+		status = "okay";
+	};
+
+	lvds1_panel {
+		compatible = "auo,g070vw01";		/* Support AUO G070VW01 V0 800x480 LVDS Display*/
+		/* compatible = "auo,g185xw01";*/	/* Support AUO G180XW01 V1 1360x768 LVDS Display*/	
+		backlight = <&backlight_lvds0>;
+		enable-gpios = <&lsio_gpio1 5 0>;	/* Enable LCD_VDD_EN pin */
+
+		port {
+			panel_lvds1_in: endpoint {
+				remote-endpoint = <&lvds1_out>;
+			};
+		};
+	};
+
+	backlight_lvds1: backlight_lvds@1 {
+		compatible = "pwm-backlight";
+		pwms = <&pwm_lvds1 0 100000 0>;
+		brightness-levels = < 0  1  2  3  4  5  6  7  8  9
+				     10 11 12 13 14 15 16 17 18 19
+				     20 21 22 23 24 25 26 27 28 29
+				     30 31 32 33 34 35 36 37 38 39
+				     40 41 42 43 44 45 46 47 48 49
+				     50 51 52 53 54 55 56 57 58 59
+				     60 61 62 63 64 65 66 67 68 69
+				     70 71 72 73 74 75 76 77 78 79
+				     80 81 82 83 84 85 86 87 88 89
+				     90 91 92 93 94 95 96 97 98 99
+				    100>;
+		default-brightness-level = <80>;
+		status = "disabled";
+	};
+};
+
+&ldb1 {
+	status = "disabled";
+};
+
+&ldb1_phy {
+	status = "disabled";
+};
+
+&ldb2 {
+	status = "okay";
+
+	lvds-channel@0 {
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <24>;
+		status = "okay";
+
+		port@1 {
+			reg = <1>;
+
+			lvds1_out: endpoint {
+				remote-endpoint = <&panel_lvds1_in>;
+			};
+		};
+	};
+};
+
+&ldb2_phy {
+	status = "okay";
+};
+
+&pwm_lvds0 {
+	status = "okay";
+};
+
+&pwm_lvds1 {
+	status = "disabled";
+};
+
+&mipi0_dsi_host {
+	status = "disabled";
+};
+
+&mipi1_dphy {
+	status = "disabled";
+};
+
+&mipi1_dsi_host {
+	status = "disabled";
+};
+
+&mipi1_dphy {
+	status = "disabled";
+};

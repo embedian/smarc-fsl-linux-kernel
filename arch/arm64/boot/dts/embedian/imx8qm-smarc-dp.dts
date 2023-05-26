@@ -1,0 +1,10 @@
+/*
+ * Copyright 2023 EMBEDIAN, INC.
+ */
+
+#include "imx8qm-smarc-common.dtsi"
+#include "imx8qm-smarc-dp.dtsi"
+
+/ {
+	model = "Embedian SMARC-iMX8Q CPU Module DP";
+};

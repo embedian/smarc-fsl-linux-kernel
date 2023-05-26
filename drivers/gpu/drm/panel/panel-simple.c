@@ -2901,6 +2901,79 @@ static const struct panel_desc jdi_tx26d202vm0bwa = {
 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
 };
 
+static const struct display_timing auo_g070vw01_timing = {
+	.pixelclock = { 27000000, 33300000, 39400000 },
+	.hactive = { 800, 800, 800 },
+	.hfront_porch = { 30, 64, 110 },
+	.hback_porch = { 30, 64, 110 },
+	.hsync_len = { 60, 128, 220 },
+	.vactive = { 480, 480, 480},
+	.vfront_porch = { 2, 7, 12 },
+	.vback_porch = { 2, 7, 12 },
+	.vsync_len = { 4, 14, 26 },
+	.flags = DISPLAY_FLAGS_DE_HIGH,
+};
+
+static const struct panel_desc auo_g070vw01 = {
+	.timings = &auo_g070vw01_timing,
+	.num_timings = 1,
+	.bpc = 8,
+	.size = {
+	.width = 152,
+	.height = 91,
+	},
+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+	.delay = {
+		/*
+		 * The panel spec recommends one second delay
+		 * to the below items.  However, it's a bit too
+		 * long in pratice.  Based on tests, it turns
+		 * out 100 milliseconds is fine.
+		*/
+		.prepare = 100,
+		.enable = 100,
+		.unprepare = 100,
+		.disable = 100,
+	},
+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+};
+
+static const struct display_timing auo_g185xw01_timing = {
+	.pixelclock = { 55000000, 78000000, 104000000 },
+	.hactive = { 1360, 1360, 1360 },
+	.hfront_porch = { 12, 60, 170 },
+	.hback_porch = { 12, 60, 170 },
+	.hsync_len = { 26, 120, 341 },
+	.vactive = { 768, 768, 768},
+	.vfront_porch = { 2, 10, 20 },
+	.vback_porch = { 2, 10, 20 },
+	.vsync_len = { 4, 20, 40 },
+	.flags = DISPLAY_FLAGS_DE_HIGH,
+};
+
+static const struct panel_desc auo_g185xw01 = {
+	.timings = &auo_g185xw01_timing,
+	.num_timings = 1,
+	.bpc = 8,
+	.size = {
+		.width = 410,
+		.height = 230,
+	},
+	.delay = {
+		/*
+		 * The panel spec recommends one second delay
+		 * to the below items.  However, it's a bit too
+		 * long in pratice.  Based on tests, it turns
+		 * out 100 milliseconds is fine.
+		*/
+		.prepare = 100,
+		.enable = 100,
+		.unprepare = 100,
+		.disable = 100,
+	},
+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+};
+
 static const struct display_timing koe_tx14d24vm1bpa_timing = {
 	.pixelclock = { 5580000, 5850000, 6200000 },
 	.hactive = { 320, 320, 320 },
@@ -4773,6 +4846,12 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "jdi,tx26d202vm0bwa",
 		.data = &jdi_tx26d202vm0bwa,
 	}, {
+		.compatible = "auo,g070vw01",
+		.data = &auo_g070vw01,
+	}, {
+		.compatible = "auo,g185xw01",
+		.data = &auo_g185xw01,
+	}, {
 		.compatible = "koe,tx14d24vm1bpa",
 		.data = &koe_tx14d24vm1bpa,
 	}, {
@@ -5234,6 +5313,95 @@ static const struct panel_desc_dsi osd101t2045_53ts = {
 	.lanes = 4,
 };
 
+static const struct drm_display_mode auo_g070vw01mq_mode = {
+	.clock = 31500,
+	.hdisplay = 800,
+	.hsync_start = 800 + 40,	
+	.hsync_end = 800 + 40 + 128,
+	.htotal = 800 + 40 + 128 + 88,
+	.vdisplay = 480,
+	.vsync_start = 480 + 10,
+	.vsync_end = 480 + 10 + 2,
+	.vtotal = 480 + 10 + 2 + 33,
+	.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
+};
+
+static const struct panel_desc_dsi auo_g070vw01mq = {
+	.desc = {
+		.modes = &auo_g070vw01mq_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 152,
+			.height = 91,
+		},
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
+		.bus_flags = DRM_BUS_FLAG_DE_LOW,
+
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
+static const struct drm_display_mode auo_g185xw01mq_mode = {
+	.clock = 74250,
+	.hdisplay = 1366,
+	.hsync_start = 1366 + 72,
+	.hsync_end = 1366 + 72 + 144,
+	.htotal = 1366 + 72 + 144 + 216,
+	.vdisplay = 768,
+	.vsync_start = 768 + 1,
+	.vsync_end = 768 + 1 + 3,
+	.vtotal = 768 + 1 + 3 + 23,
+	.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
+};
+
+static const struct panel_desc_dsi auo_g185xw01mq = {
+	.desc = {
+		.modes = &auo_g185xw01mq_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 410,
+			.height = 230,
+		},
+		.bus_flags = DRM_BUS_FLAG_DE_LOW,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
+static const struct drm_display_mode auo_g240hw01mq_mode = {
+	.clock = 148500,
+	.hdisplay = 1920,
+	.hsync_start = 1920 + 88,
+	.hsync_end = 1920 + 88 + 44,
+	.htotal = 1920 + 88 + 44 + 148,
+	.vdisplay = 1080,
+	.vsync_start = 1080 + 4,
+	.vsync_end = 1080 + 4 + 5,
+	.vtotal = 1080 + 4 + 5 + 36,
+	.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
+};
+
+static const struct panel_desc_dsi auo_g240hw01mq = {
+	.desc = {
+		.modes = &auo_g240hw01mq_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 531,
+			.height = 299,
+		},
+		.bus_flags = DRM_BUS_FLAG_DE_LOW,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
 static const struct of_device_id dsi_of_match[] = {
 	{
 		.compatible = "auo,b080uan01",
@@ -5247,6 +5415,15 @@ static const struct of_device_id dsi_of_match[] = {
 	}, {
 		.compatible = "lg,lh500wx1-sd03",
 		.data = &lg_lh500wx1_sd03
+	}, {
+		.compatible = "auo,g070vw01mq",
+		.data = &auo_g070vw01mq,
+	}, {
+		.compatible = "auo,g185xw01mq",
+		.data = &auo_g185xw01mq,
+	}, {	
+		.compatible = "auo,g240hw01mq",
+		.data = &auo_g240hw01mq,
 	}, {
 		.compatible = "panasonic,vvx10f004b00",
 		.data = &panasonic_vvx10f004b00
