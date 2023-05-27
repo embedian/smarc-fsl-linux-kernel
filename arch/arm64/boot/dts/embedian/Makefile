@@ -1,10 +1,12 @@
 # SPDX-License-Identifier: GPL-2.0
 
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-smarc.dtb \
+			imx8mp-pitx-avb.dtb \
 			imx8mp-pitx-rs485.dtb \
 			imx8mp-pitx-lvds-rs485.dtb \
 			imx8mp-pitx.dtb \
 			imx8mp-pitx-lvds.dtb \
+			imx8mp-smarc-avb.dtb \
 			imx8mp-smarc-hdmi.dtb \
 			imx8mp-smarc-lvds.dtb \
 			imx8mp-smarc-m7.dtb \
@@ -21,6 +23,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-smarc.dtb \
 			imx8mq-smarc-m4-lcdif-lvds.dtb \
 			imx8mq-smarc-m4-dual-display.dtb \
 			imx8mm-smarc.dtb \
+			imx8mm-smarc-avb.dtb \
 			imx8mm-smarc-m4.dtb \
 			imx8qm-smarc.dtb \
 			imx8qm-smarc-dp.dtb \
