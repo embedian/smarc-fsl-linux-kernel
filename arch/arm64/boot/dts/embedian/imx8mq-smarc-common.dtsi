@@ -738,6 +738,9 @@
 		   <&gpio3 15 GPIO_ACTIVE_LOW>,
 		   <&gpio3 17 GPIO_ACTIVE_LOW>;
 	fsl,spi-num-chipselects = <4>;
+	dmas = <&sdma1 0 7 1>, <&sdma1 1 7 2>;
+	dma-names = "rx", "tx";
+	fsl,spi-rdy-drctl = <1>;
 	status = "okay";
 
 	spidev@0 {
@@ -759,7 +762,9 @@
 		pinctrl-0 = <&pinctrl_can1>;
 		interrupt-parent = <&gpio3>;
 		interrupts = <18 IRQ_TYPE_EDGE_FALLING>;
-		spi-max-frequency = <10000000>;
+		spi-max-frequency = <8000000>;
+		spi-cpha = <1>;
+		spi-cpol = <1>;
 		clocks = <&clk25m>;
 		vdd-supply = <&reg_3p3v>;
 		xceiver-supply = <&reg_5p0v>;
@@ -773,7 +778,9 @@
 		pinctrl-0 = <&pinctrl_can2>;
 		interrupt-parent = <&gpio3>;
 		interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
-		spi-max-frequency = <10000000>;
+		spi-max-frequency = <8000000>;
+		spi-cpha = <1>;
+		spi-cpol = <1>;
 		clocks = <&clk25m>;
 		vdd-supply = <&reg_3p3v>;
 		xceiver-supply = <&reg_5p0v>;
@@ -1225,13 +1232,13 @@
 
 	pinctrl_can1: can1grp {
 		fsl,pins = <
-			MX8MQ_IOMUXC_NAND_WP_B_GPIO3_IO18	0x41	/*CAN0_INT#*/
+			MX8MQ_IOMUXC_NAND_WP_B_GPIO3_IO18	0x1f	/*CAN0_INT#*/
 		>;
 	};
 
 	pinctrl_can2: can2grp {
 		fsl,pins = <
-			MX8MQ_IOMUXC_NAND_READY_B_GPIO3_IO16	0x41	/*CAN1_INT#*/
+			MX8MQ_IOMUXC_NAND_READY_B_GPIO3_IO16	0x1f	/*CAN1_INT#*/
 		>;
 	};
 
