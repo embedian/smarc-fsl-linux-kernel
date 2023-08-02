@@ -762,7 +762,7 @@
 		pinctrl-0 = <&pinctrl_can1>;
 		interrupt-parent = <&gpio3>;
 		interrupts = <18 IRQ_TYPE_EDGE_FALLING>;
-		spi-max-frequency = <8000000>;
+		spi-max-frequency = <10000000>;
 		spi-cpha = <1>;
 		spi-cpol = <1>;
 		clocks = <&clk25m>;
@@ -778,7 +778,7 @@
 		pinctrl-0 = <&pinctrl_can2>;
 		interrupt-parent = <&gpio3>;
 		interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
-		spi-max-frequency = <8000000>;
+		spi-max-frequency = <10000000>;
 		spi-cpha = <1>;
 		spi-cpol = <1>;
 		clocks = <&clk25m>;
