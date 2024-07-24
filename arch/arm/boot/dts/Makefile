@@ -545,6 +545,11 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-savageboard.dtb \
 	imx6dl-skov-revc-lt2.dtb \
 	imx6dl-skov-revc-lt6.dtb \
+	imx6dl-smarc.dtb \
+	imx6dl-smarc-wvga.dtb \
+	imx6dl-smarc-wxga.dtb \
+	imx6dl-smarc-xga.dtb \
+	imx6dl-smarc-1080p.dtb \
 	imx6dl-solidsense.dtb \
 	imx6dl-ts4900.dtb \
 	imx6dl-ts7970.dtb \
@@ -665,6 +670,11 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-skov-revc-lt2.dtb \
 	imx6q-skov-revc-lt6.dtb \
 	imx6q-skov-reve-mi1010ait-1cp1.dtb \
+	imx6q-smarc.dtb \
+	imx6q-smarc-wvga.dtb \
+	imx6q-smarc-wxga.dtb \
+	imx6q-smarc-xga.dtb \
+	imx6q-smarc-1080p.dtb \
 	imx6q-solidsense.dtb \
 	imx6q-tbs2910.dtb \
 	imx6q-ts4900.dtb \
@@ -701,6 +711,11 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6qp-sabresd-btwifi.dtb \
 	imx6qp-sabresd-hdcp.dtb \
 	imx6qp-sabresd-pcie-ep.dtb \
+	imx6qp-smarc.dtb \
+	imx6qp-smarc-wvga.dtb \
+	imx6qp-smarc-wxga.dtb \
+	imx6qp-smarc-xga.dtb \
+	imx6qp-smarc-1080p.dtb \
 	imx6qp-tx6qp-8037.dtb \
 	imx6qp-tx6qp-8037-mb7.dtb \
 	imx6qp-tx6qp-8137.dtb \
@@ -876,6 +891,7 @@ dtb-$(CONFIG_SOC_IMX7D) += \
 	imx7d-sdb-sht11.dtb \
 	imx7d-sdb-usd-wifi.dtb \
 	imx7d-sdb-pcie-ep.dtb \
+	imx7d-smarc.dtb \
 	imx7d-smegw01.dtb \
 	imx7d-12x12-lpddr3-val.dtb \
 	imx7d-12x12-lpddr3-val-sai.dtb \
@@ -886,6 +902,7 @@ dtb-$(CONFIG_SOC_IMX7D) += \
 	imx7s-colibri-iris.dtb \
 	imx7s-colibri-iris-v2.dtb \
 	imx7s-mba7.dtb \
+	imx7s-smarc.dtb \
 	imx7s-warp.dtb
 dtb-$(CONFIG_SOC_IMX7ULP) += \
 	imx7ulp-com.dtb \

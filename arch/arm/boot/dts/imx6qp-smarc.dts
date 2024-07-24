@@ -1,0 +1,75 @@
+// SPDX-License-Identifier: GPL-2.0+
+//
+// Copyright 2012 Freescale Semiconductor, Inc.
+// Copyright 2011 Linaro Ltd.
+// Copyright 2024 Embedian, Inc.
+
+/dts-v1/;
+
+#include "imx6qp.dtsi"
+#include "imx6qdl-smarc.dtsi"
+
+/ {
+	model = "Embedian i.MX6 Quad Plus SMARC-FiMX6 CPU Board";
+	compatible = "fsl,imx6qp-smarc", "fsl,imx6qp";
+};
+
+&ldb {
+	lvds-channel@0 {
+		crtc = "ipu2-di0";
+	};
+
+	lvds-channel@1 {
+		crtc = "ipu2-di1";
+	};
+};
+
+&mxcfb1 {
+	prefetch;
+	status = "okay";
+};
+
+&mxcfb2 {
+	prefetch;
+	status = "okay";
+};
+
+&mxcfb3 {
+	prefetch;
+	status = "okay";
+};
+
+&mxcfb4 {
+	prefetch;
+	status = "okay";
+};
+
+&sata {
+	status = "okay";
+};
+
+&pre1 {
+	status = "okay";
+};
+
+&pre2 {
+	status = "okay";
+};
+
+&pre3 {
+	status = "okay";
+};
+
+&pre4 {
+	status = "okay";
+};
+
+&prg1 {
+	memory-region = <&memory>;
+	status = "okay";
+};
+
+&prg2 {
+	memory-region = <&memory>;
+	status = "okay";
+};

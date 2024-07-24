@@ -1244,6 +1244,37 @@ static const struct panel_desc boe_ev121wxm_n10_1850 = {
 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
 };
 
+static const struct drm_display_mode auo_g070vw01_mode = {
+	.clock = 32187,
+	.hdisplay = 800,
+	.hsync_start = 800 + 64,
+	.hsync_end = 800 + 64 + 64,
+	.htotal = 800 + 64 + 64 + 128,
+	.vdisplay = 480,
+	.vsync_start = 480 + 7,
+	.vsync_end = 480 + 7 + 7,
+	.vtotal = 480 + 7 + 7 + 14,
+};
+
+static const struct panel_desc auo_g070vw01 = {
+        .modes = &auo_g070vw01_mode,
+        .num_modes = 1,
+        .bpc = 8,
+        .size = {
+                .width = 152,
+                .height = 91,
+        },
+        .delay = {
+                .prepare = 100,
+                .enable = 100,
+                .unprepare = 100,
+                .disable = 100,
+        },
+        .bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+        .bus_flags = DRM_BUS_FLAG_DE_HIGH,
+        .connector_type = DRM_MODE_CONNECTOR_LVDS,
+};
+
 static const struct drm_display_mode boe_hv070wsa_mode = {
 	.clock = 42105,
 	.hdisplay = 1024,
@@ -4231,6 +4262,9 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "jdi,tx26d202vm0bwa",
 		.data = &jdi_tx26d202vm0bwa,
 	}, {
+		.compatible = "auo,g070vw01",
+		.data = &auo_g070vw01,
+	}, {
 		.compatible = "koe,tx14d24vm1bpa",
 		.data = &koe_tx14d24vm1bpa,
 	}, {
@@ -4688,6 +4722,43 @@ static const struct panel_desc_dsi osd101t2045_53ts = {
 	.lanes = 4,
 };
 
+static const struct drm_display_mode auo_g070vw01mm_mode = {
+	.clock = 32000,
+	.hdisplay = 800,
+	.hsync_start = 800 + 64,
+	.hsync_end = 800 + 64 + 128,
+	.htotal = 800 + 64 + 128 + 64,
+	.vdisplay = 480,
+	.vsync_start = 480 + 7,
+	.vsync_end = 480 + 7 + 14,
+	.vtotal = 480 + 7 + 14 + 7,
+	.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
+};
+
+static const struct panel_desc_dsi auo_g070vw01mm = {
+	.desc = {
+		.modes = &auo_g070vw01mm_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 152,
+			.height = 91,
+		},
+	.delay = {
+		.prepare = 200,
+		.enable = 50,
+		.disable = 50,
+		.unprepare = 1000,
+	},
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
+		.bus_flags = DRM_BUS_FLAG_DE_LOW,
+
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
 static const struct of_device_id dsi_of_match[] = {
 	{
 		.compatible = "auo,b080uan01",
@@ -4701,7 +4772,7 @@ static const struct of_device_id dsi_of_match[] = {
 	}, {
 		.compatible = "lg,lh500wx1-sd03",
 		.data = &lg_lh500wx1_sd03
-	}, {
+        }, {
 		.compatible = "panasonic,vvx10f004b00",
 		.data = &panasonic_vvx10f004b00
 	}, {
@@ -4710,6 +4781,9 @@ static const struct of_device_id dsi_of_match[] = {
 	}, {
 		.compatible = "osddisplays,osd101t2045-53ts",
 		.data = &osd101t2045_53ts
+	}, {
+		.compatible = "auo,g070vw01mm",
+		.data = &auo_g070vw01mm,
 	}, {
 		/* sentinel */
 	}

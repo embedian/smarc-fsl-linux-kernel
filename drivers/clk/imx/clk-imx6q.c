@@ -1007,6 +1007,8 @@ static void __init imx6q_clocks_init(struct device_node *ccm_node)
 		clk_set_parent(hws[IMX6QDL_CLK_IPU2_SEL]->clk, hws[IMX6QDL_CLK_MMDC_CH0_AXI]->clk);
 	}
 
+	clk_set_parent(hws[IMX6QDL_CLK_LDB_DI0_SEL]->clk, hws[IMX6QDL_CLK_PLL5_VIDEO_DIV]->clk);
+	clk_set_parent(hws[IMX6QDL_CLK_LDB_DI1_SEL]->clk, hws[IMX6QDL_CLK_PLL5_VIDEO_DIV]->clk);
 	clk_set_parent(hws[IMX6QDL_CLK_IPU1_DI0_PRE_SEL]->clk, hws[IMX6QDL_CLK_PLL5_VIDEO_DIV]->clk);
 	clk_set_parent(hws[IMX6QDL_CLK_IPU1_DI1_PRE_SEL]->clk, hws[IMX6QDL_CLK_PLL5_VIDEO_DIV]->clk);
 	clk_set_parent(hws[IMX6QDL_CLK_IPU2_DI0_PRE_SEL]->clk, hws[IMX6QDL_CLK_PLL5_VIDEO_DIV]->clk);
