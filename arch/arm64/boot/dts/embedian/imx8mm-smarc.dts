@@ -459,9 +459,8 @@
 		status = "okay";
 		reg = <0x2c>;
 		compatible = "ti,sn65dsi84";
-		enable-gpios = <&gpio4 28 GPIO_ACTIVE_HIGH>;
-		interrupt-parent = <&gpio4>;
-		interrupts = <29 IRQ_TYPE_EDGE_FALLING>;
+		enable-gpios = <&gpio3 13 GPIO_ACTIVE_HIGH>;
+		pinctrl-0 = <&plnctrl_dsi_bridge>;
 
 		/* AUO G070VW01 7-inch 800x480 LVDS Display */
 		sn65dsi84,addresses = < 0x09 0x0A 0x0B 0x0D 0x10 0x11 0x12 0x13
@@ -943,6 +942,12 @@
 			MX8MM_IOMUXC_SAI5_RXD1_PDM_DATA1	0xd6
 			MX8MM_IOMUXC_SAI5_RXD2_PDM_DATA2	0xd6
 			MX8MM_IOMUXC_SAI5_RXD3_PDM_DATA3	0xd6
+		>;
+	};
+
+	plnctrl_dsi_bridge: lvdsgrp {
+		fsl,pins = <
+			MX8MM_IOMUXC_NAND_DATA07_GPIO3_IO13	0x16
 		>;
 	};
 
