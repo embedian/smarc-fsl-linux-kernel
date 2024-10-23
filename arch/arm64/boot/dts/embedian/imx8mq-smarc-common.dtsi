@@ -76,9 +76,9 @@
 		regulator-name = "vdd_arm";
 		regulator-min-microvolt = <1000000>;
 		regulator-max-microvolt = <1000000>;
-		gpios = <&gpio1 13 GPIO_ACTIVE_HIGH>;
+		/*gpios = <&gpio1 13 GPIO_ACTIVE_HIGH>;
 		states = <1000000 0x0
-			  900000 0x1>;
+			  900000 0x1>;*/
 		regulator-boot-on;
 		regulator-always-on;
 	};
