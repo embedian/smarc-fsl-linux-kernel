@@ -5,7 +5,7 @@
 
 /dts-v1/;
 
-#include "imx7d.dtsi"
+#include "../../nxp/imx/imx7d.dtsi"
 
 / {
 	model = "Embedian i.MX7D SMARC 2.0 Module";
