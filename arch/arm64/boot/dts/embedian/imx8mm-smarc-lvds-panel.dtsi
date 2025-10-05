@@ -1,0 +1,37 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/*
+ * Copyright 2024 Embedian, Inc.
+ */
+
+/ {
+	panel {
+		compatible = "panel-lvds";
+		data-mapping = "vesa-24";
+		width-mm = <152>;
+		height-mm = <91>;
+		backlight = <&backlight>;
+		enable-gpios = <&gpio4 1 0>;	/* Enable LCD_VDD_EN pin */
+
+		panel-timing {
+			clock-frequency = <32000000>;
+			hactive = <800>;
+			vactive = <480>;
+			hback-porch = <64>;
+			hfront-porch = <64>;
+			vback-porch = <7>;
+			vfront-porch = <7>;
+			hsync-len = <128>;
+			vsync-len = <14>;
+			hsync-active = <0>;
+			vsync-active = <0>;
+			de-active = <1>;
+			pixelclk-active = <0>;
+		};
+
+		port {
+			panel_in_bridge: endpoint {
+				remote-endpoint = <&bridge_out_panel>;
+			};
+		};
+	};
+};
