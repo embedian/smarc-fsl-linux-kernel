@@ -10,7 +10,7 @@
 		width-mm = <152>;
 		height-mm = <91>;
 		backlight = <&backlight>;
-		enable-gpios = <&gpio4 1 0>;	/* Enable LCD_VDD_EN pin */
+		enable-gpios = <&gpio4 1 GPIO_ACTIVE_HIGH>;	/* Enable LCD_VDD_EN pin */
 
 		panel-timing {
 			clock-frequency = <32000000>;

@@ -149,7 +149,7 @@
 
 	backlight: backlight {
 		compatible = "pwm-backlight";
-		enable-gpios = <&gpio4 0 0>;	/* Backlight Enable */
+		enable-gpios = <&gpio4 0 GPIO_ACTIVE_HIGH>;	/* Backlight Enable */
 		pwms = <&pwm1 0 1000000 0>;
 		brightness-levels = < 0  1  2  3  4  5  6  7  8  9
 				10 11 12 13 14 15 16 17 18 19
@@ -487,7 +487,8 @@
 				};
 			};
 
-			port@1 {
+			port@2 {
+				reg = <2>;
 				bridge_out_panel: endpoint {
 					remote-endpoint = <&panel_in_bridge>;
 				};
@@ -567,7 +568,7 @@
 &mipi_dsi {
 	status = "okay";
 
-	port {
+	port@1 {
 		mipi_dsi_out: endpoint {
 			remote-endpoint = <&bridge_in_dsi>;
 			attach-bridge;
