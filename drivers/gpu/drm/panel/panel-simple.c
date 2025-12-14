@@ -1302,6 +1302,37 @@ static const struct panel_desc boe_ev121wxm_n10_1850 = {
 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
 };
 
+static const struct drm_display_mode auo_g070vw01_mode = {
+	.clock = 32187,
+	.hdisplay = 800,
+	.hsync_start = 800 + 64,
+	.hsync_end = 800 + 64 + 64,
+	.htotal = 800 + 64 + 64 + 128,
+	.vdisplay = 480,
+	.vsync_start = 480 + 7,
+	.vsync_end = 480 + 7 + 7,
+	.vtotal = 480 + 7 + 7 + 14,
+};
+
+static const struct panel_desc auo_g070vw01 = {
+	.modes = &auo_g070vw01_mode,
+	.num_modes = 1,
+	.bpc = 8,
+	.size = {
+		.width = 152,
+		.height = 91,
+	},
+	.delay = {
+		.prepare = 100,
+		.enable = 100,
+		.unprepare = 100,
+		.disable = 100,
+	},
+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+};
+
 static const struct drm_display_mode boe_hv070wsa_mode = {
 	.clock = 42105,
 	.hdisplay = 1024,
@@ -4396,6 +4427,9 @@ static const struct of_device_id platform_of_match[] = {
 	}, {
 		.compatible = "jdi,tx26d202vm0bwa",
 		.data = &jdi_tx26d202vm0bwa,
+	}, {
+		.compatible = "auo,g070vw01",
+		.data = &auo_g070vw01,
 	}, {
 		.compatible = "koe,tx14d24vm1bpa",
 		.data = &koe_tx14d24vm1bpa,
