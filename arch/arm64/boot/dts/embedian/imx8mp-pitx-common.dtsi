@@ -769,8 +769,8 @@ reg_usdhc3_vmmc: regulator-usdhc3 {
 &pcie{
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcie0>;
-	reset-gpio = <&gpio_expander_0 3 GPIO_ACTIVE_LOW>;
-	host-wake-gpio = <&gpio_expander_0 5 GPIO_ACTIVE_LOW>;
+	/*reset-gpio = <&gpio_expander_0 3 GPIO_ACTIVE_LOW>;
+	host-wake-gpio = <&gpio_expander_0 5 GPIO_ACTIVE_LOW>;*/
 	vpcie-supply = <&reg_pcie0>;
 	status = "okay";
 };
