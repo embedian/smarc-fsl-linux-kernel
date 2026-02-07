@@ -341,6 +341,7 @@
 };
 
 &fec {
+	compatible = "fsl,imx8mp-fec-igh-native", "fsl,imx8mq-fec-igh-native", "fsl,imx6sx-fec-igh-native";
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_fec>;
 	phy-mode = "rgmii-id";
