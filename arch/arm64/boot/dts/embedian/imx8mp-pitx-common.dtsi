@@ -366,6 +366,12 @@
 	};
 };
 
+/* Move gpu_reserved to support boards with <= 2GB memory */
+&gpu_reserved {
+	no-map;
+	reg = <0x0 0x60000000 0x0 0x10000000>;
+};
+
 /* I2C1 */
 &i2c1 {
 	clock-frequency = <400000>;
