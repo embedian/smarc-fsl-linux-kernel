@@ -677,6 +677,16 @@ int dw_pcie_link_up(struct dw_pcie *pci)
 {
 	u32 val;
 
+	/*
+	 * [CRITICAL FIX] If the system is in the process of shutting down, halting,
+	 * or rebooting, or if the pci/dbi_base pointers are invalid, skip the 
+	 * hardware register read. This prevents a fatal kernel paging request 
+	 * (Oops) when child drivers (e.g., moal/wifi) try to probe the link 
+	 * after the PCIe controller has already been disabled or unmapped.
+	 */
+	if (system_state >= SYSTEM_HALT || !pci || !pci->dbi_base)
+		return 0;
+
 	if (pci->ops && pci->ops->link_up)
 		return pci->ops->link_up(pci);
 

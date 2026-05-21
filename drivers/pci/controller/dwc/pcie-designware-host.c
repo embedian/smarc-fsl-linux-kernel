@@ -550,6 +550,15 @@ EXPORT_SYMBOL_GPL(dw_pcie_host_deinit);
 static void __iomem *dw_pcie_other_conf_map_bus(struct pci_bus *bus,
 						unsigned int devfn, int where)
 {
+	/*
+	 * [CRITICAL FIX] If the system is shutting down or halting, the host
+	 * controller's inner structures and maps may have already been freed
+	 * or disabled. Return NULL to prevent generic PCI config read/write
+	 * wrappers (like readw) from accessing unreadable or dead memory addresses.
+	*/
+	if (system_state >= SYSTEM_HALT)
+		return NULL;
+
 	struct dw_pcie_rp *pp = bus->sysdata;
 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
 	int type, ret;

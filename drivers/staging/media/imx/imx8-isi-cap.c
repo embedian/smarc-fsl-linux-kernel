@@ -1966,5 +1966,5 @@ module_platform_driver(isi_cap_driver);
 MODULE_AUTHOR("Freescale Semiconductor, Inc.");
 MODULE_DESCRIPTION("IMX8 Image Sensor Interface Capture driver");
 MODULE_LICENSE("GPL");
-MODULE_ALIAS("ISI Capture");
+MODULE_ALIAS("ISI_Capture");
 MODULE_VERSION("1.0");

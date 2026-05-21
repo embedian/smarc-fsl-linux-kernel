@@ -110,6 +110,21 @@ static void imx_imx_snvs_check_for_events(struct timer_list *t)
 	}
 }
 
+static void imx_imx_snvs_check_for_release_events(struct timer_list *t)
+{
+	struct pwrkey_drv_data *pdata = from_timer(pdata, t, check_timer);
+	struct input_dev *input = pdata->input;
+	u32 state;
+
+	/* interrupt only reports release of key so do not wait for state change */
+	state=1;
+	input_event(input, EV_KEY, pdata->keycode, state);
+	input_sync(input);
+	state=0;
+	input_event(input, EV_KEY, pdata->keycode, state);
+	input_sync(input);
+}
+
 static irqreturn_t imx_snvs_pwrkey_interrupt(int irq, void *dev_id)
 {
 	struct platform_device *pdev = dev_id;
@@ -286,7 +301,11 @@ static int imx_snvs_pwrkey_probe(struct platform_device *pdev)
 	else
 		regmap_write(pdata->snvs, SNVS_LPSR_REG, SNVS_LPSR_SPO);
 
-	timer_setup(&pdata->check_timer, imx_imx_snvs_check_for_events, 0);
+	if (of_property_read_bool(np, "key-release-only"))
+		timer_setup(&pdata->check_timer, imx_imx_snvs_check_for_release_events, 0);
+	else
+		timer_setup(&pdata->check_timer, imx_imx_snvs_check_for_events, 0);
+
 
 	input = devm_input_allocate_device(&pdev->dev);
 	if (!input) {
@@ -346,7 +365,7 @@ static int __maybe_unused imx_snvs_pwrkey_suspend(struct device *dev)
 	struct pwrkey_drv_data *pdata = platform_get_drvdata(pdev);
 
 	if (pdata->clk)
-		clk_disable_unprepare(pdata->clk);
+		clk_disable(pdata->clk);
 
 	pdata->suspended = true;
 
@@ -359,7 +378,7 @@ static int __maybe_unused imx_snvs_pwrkey_resume(struct device *dev)
 	struct pwrkey_drv_data *pdata = platform_get_drvdata(pdev);
 
 	if (pdata->clk)
-		clk_prepare_enable(pdata->clk);
+		clk_enable(pdata->clk);
 
 	pdata->suspended = false;
 

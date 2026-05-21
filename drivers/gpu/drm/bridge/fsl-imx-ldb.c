@@ -334,4 +334,4 @@ EXPORT_SYMBOL_GPL(ldb_bind);
 MODULE_DESCRIPTION("Freescale i.MX LVDS display bridge driver");
 MODULE_AUTHOR("Freescale Semiconductor, Inc.");
 MODULE_LICENSE("GPL");
-MODULE_ALIAS("platform: fsl-imx-ldb");
+MODULE_ALIAS("platform:fsl-imx-ldb");

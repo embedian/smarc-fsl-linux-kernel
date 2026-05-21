@@ -1479,8 +1479,9 @@ err_phy_exit:
 err_clk_disable:
 	imx6_pcie_clk_disable(imx6_pcie);
 err_reg_disable:
-	if (imx6_pcie->vpcie)
+	if (imx6_pcie->vpcie && regulator_is_enabled(imx6_pcie->vpcie)) {
 		regulator_disable(imx6_pcie->vpcie);
+	}
 	return ret;
 }
 
@@ -2099,14 +2100,14 @@ static int imx6_pcie_probe(struct platform_device *pdev)
 	pci->link_gen = 1;
 	of_property_read_u32(node, "fsl,max-link-speed", &pci->link_gen);
 
-	imx6_pcie->vpcie = devm_regulator_get_optional(&pdev->dev, "vpcie");
+	imx6_pcie->vpcie = regulator_get_optional(&pdev->dev, "vpcie");
 	if (IS_ERR(imx6_pcie->vpcie)) {
-		if (PTR_ERR(imx6_pcie->vpcie) != -ENODEV)
+		if (PTR_ERR(imx6_pcie->vpcie) != -ENODEV && PTR_ERR(imx6_pcie->vpcie) != -EBUSY)
 			return PTR_ERR(imx6_pcie->vpcie);
 		imx6_pcie->vpcie = NULL;
 	}
 
-	imx6_pcie->vph = devm_regulator_get_optional(&pdev->dev, "vph");
+	imx6_pcie->vph = regulator_get_optional(&pdev->dev, "vph");
 	if (IS_ERR(imx6_pcie->vph)) {
 		if (PTR_ERR(imx6_pcie->vph) != -ENODEV)
 			return PTR_ERR(imx6_pcie->vph);
@@ -2117,16 +2118,16 @@ static int imx6_pcie_probe(struct platform_device *pdev)
 
 	ret = imx6_pcie_attach_pd(dev);
 	if (ret)
-		return ret;
+		goto err_clear_drvdata;
 
 	if (imx6_pcie->drvdata->mode == DW_PCIE_EP_TYPE) {
 		ret = imx6_add_pcie_ep(imx6_pcie, pdev);
 		if (ret < 0)
-			return ret;
+			goto err_clear_drvdata;
 	} else {
 		ret = dw_pcie_host_init(&pci->pp);
 		if (ret < 0)
-			return ret;
+			goto err_clear_drvdata;
 
 		if (pci_msi_enabled()) {
 			u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_MSI);
@@ -2139,8 +2140,10 @@ static int imx6_pcie_probe(struct platform_device *pdev)
 		/* host wakeup support */
 		imx6_pcie->host_wake_irq = -1;
 		host_wake_gpio = devm_gpiod_get_optional(dev, "host-wake", GPIOD_IN);
-		if (IS_ERR(host_wake_gpio))
-			return PTR_ERR(host_wake_gpio);
+		if (IS_ERR(host_wake_gpio)) {
+			ret = PTR_ERR(host_wake_gpio);
+			goto err_clear_drvdata;
+		}
 
 		if (host_wake_gpio != NULL) {
 			imx6_pcie->host_wake_irq = gpiod_to_irq(host_wake_gpio);
@@ -2152,23 +2155,39 @@ static int imx6_pcie_probe(struct platform_device *pdev)
 				dev_err(dev, "Failed to request host_wake_irq %d (%d)\n",
 					imx6_pcie->host_wake_irq, ret);
 				imx6_pcie->host_wake_irq = -1;
-				return ret;
+				goto err_clear_drvdata;
 			}
 
 			if (device_init_wakeup(dev, true)) {
 				dev_err(dev, "fail to init host_wake_irq\n");
 				imx6_pcie->host_wake_irq = -1;
-				return ret;
+				goto err_clear_drvdata;
 			}
 		}
 	}
 
 	return 0;
+
+err_clear_drvdata:
+	platform_set_drvdata(pdev, NULL);
+	return ret;
 }
 
 static void imx6_pcie_shutdown(struct platform_device *pdev)
 {
 	struct imx6_pcie *imx6_pcie = platform_get_drvdata(pdev);
+
+	/* Guard against missing or incomplete probe contexts */
+	 if (!imx6_pcie) {
+		dev_warn(&pdev->dev, "PCIe driver context is NULL, skipping shutdown\n");
+		return;
+	}
+
+	/* Bypass register/IRQ configurations if DBI was never fully initialized */
+	if (!imx6_pcie->pci || !imx6_pcie->pci->dbi_base) {
+		dev_warn(&pdev->dev, "PCIe DBI registers not mapped, skipping core reset\n");
+		goto disable_regulator;
+	}
 
 	if (imx6_pcie->host_wake_irq >= 0) {
 		device_init_wakeup(&pdev->dev, false);
@@ -2178,6 +2197,11 @@ static void imx6_pcie_shutdown(struct platform_device *pdev)
 
 	/* bring down link, so bootloader gets clean state in case of reboot */
 	imx6_pcie_assert_core_reset(imx6_pcie);
+
+disable_regulator:
+	/* Turn off the regulator to balance usage and ensure power down */
+	if (!IS_ERR(imx6_pcie->vpcie))
+		regulator_disable(imx6_pcie->vpcie);
 }
 
 static const struct imx6_pcie_drvdata drvdata[] = {

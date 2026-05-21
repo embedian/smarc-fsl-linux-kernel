@@ -1556,5 +1556,5 @@ module_exit(mxc_isi_m2m_exit);
 MODULE_AUTHOR("Freescale Semiconductor, Inc.");
 MODULE_DESCRIPTION("IMX8 Image Sensor Interface memory to memory driver");
 MODULE_LICENSE("GPL");
-MODULE_ALIAS("ISI M2M");
+MODULE_ALIAS("ISI_M2M");
 MODULE_VERSION("1.0");

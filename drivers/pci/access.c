@@ -82,6 +82,18 @@ int pci_generic_config_read(struct pci_bus *bus, unsigned int devfn,
 {
 	void __iomem *addr;
 
+	/*
+	 * [CRITICAL FIX] During system shutdown or halt, the pci_bus structure
+	 * or its underlying host controller drivers might have already been freed/disabled.
+	 * Accessing bus->ops->map_bus could yield garbage addresses (like 0x9f),
+	 * leading to fatal kernel panics in readb/readw/readl.
+	 */
+	if (system_state >= SYSTEM_HALT) {
+		if (val)
+			*val = 0xffffffff;
+		return PCIBIOS_DEVICE_NOT_FOUND;
+	}
+
 	addr = bus->ops->map_bus(bus, devfn, where);
 	if (!addr)
 		return PCIBIOS_DEVICE_NOT_FOUND;
@@ -101,6 +113,10 @@ int pci_generic_config_write(struct pci_bus *bus, unsigned int devfn,
 			     int where, int size, u32 val)
 {
 	void __iomem *addr;
+
+	/* [CRITICAL FIX] Block config writes during system shutdown */
+	if (system_state >= SYSTEM_HALT)
+		return PCIBIOS_DEVICE_NOT_FOUND;
 
 	addr = bus->ops->map_bus(bus, devfn, where);
 	if (!addr)
