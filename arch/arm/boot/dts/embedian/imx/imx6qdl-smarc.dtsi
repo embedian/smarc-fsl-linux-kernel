@@ -1040,3 +1040,7 @@
 	fsl,wdog_b;
 	status = "okay";
 };
+
+&caam_sm {
+	status = "disabled";
+};
