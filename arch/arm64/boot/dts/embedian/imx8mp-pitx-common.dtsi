@@ -72,6 +72,9 @@
 		regulator-name = "MPCIE_3V3";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
+		gpio = <&gpio_expander_0 0 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <300000>;
 		regulator-always-on;
 	};
 
@@ -519,12 +522,6 @@ reg_usdhc3_vmmc: regulator-usdhc3 {
 		interrupt-parent = <&gpio4>;
 		interrupts = <22 IRQ_TYPE_LEVEL_LOW>;
 
-		wlan_pwr_en_hog {
-			gpio-hog;
-			gpios = <0 GPIO_ACTIVE_HIGH>;
-			output-high;
-			line-name = "wlan_pwr_en";
-		};
 		m2_w_disable1_hog {
 			gpio-hog;
 			gpios = <1 GPIO_ACTIVE_LOW>;
@@ -542,12 +539,6 @@ reg_usdhc3_vmmc: regulator-usdhc3 {
 			gpios = <4 GPIO_ACTIVE_LOW>;
 			input;
 			line-name = "pcie_a_ckreq";
-		};
-		pcie_a_wake_hog {
-			gpio-hog;
-			gpios = <5 GPIO_ACTIVE_LOW>;
-			input;
-			line-name = "pcie_a_wake";
 		};
 		uart_wake_hog {
 			gpio-hog;
